@@ -1,3 +1,5 @@
+**DISCLAIMER: Not yet ready for use**
+
 Django Reusable Apps
 ====================
 
