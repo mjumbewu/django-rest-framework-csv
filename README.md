@@ -44,9 +44,9 @@ To run the tests against the current environment:
 
     ./manage.py test
 
-To run the tests against multiple environments, make sure you've installed
-`tox` using `pip install tox`, make sure you're not currently in a virtual
-environment, then simply run `tox`:
+To run the tests against multiple environments, install `tox` using
+`pip install tox`, make sure you're not currently in a virtual environment,
+then simply run `tox`:
 
     tox
 
