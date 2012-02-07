@@ -33,7 +33,8 @@ To register your package on PyPI:
 
     ./setup.py register
 
-To publish a new version of your app to PyPI:
+To publish a new version of your app to PyPI, set the `__version__` string in
+your package's `__init__.py`, then run:
 
     ./setup.py publish
 
