@@ -60,12 +60,12 @@ if sys.argv[-1] == 'publish':
 
 setup(
     name=name,
-    version=get_version(name),
+    version=get_version(package),
     url=url,
     license=license,
     description=description,
     author=author,
-    packages=get_packages(name),
-    package_data=get_package_data(name),
+    packages=get_packages(package),
+    package_data=get_package_data(package),
     install_requires=install_requires
 )
