@@ -1,5 +1,3 @@
-**DISCLAIMER: Not yet ready for use**
-
 Django Reusable Apps
 ====================
 
@@ -16,6 +14,17 @@ Includes:
 
 1. A `setup.py` that makes your life easy and doesn't suck.
 2. A simple testproject to make let you run the app's tests.
+3. A `tox` config to allow you to run your tests against multiple environments.
+
+Creating a new app
+==================
+
+You'll want to clone this project, then create a fresh git repo for it:
+
+    git clone git://github.com/dabapps/django-reusable-app.git my-project-name
+    cd my-project-name
+    rm -rf .git
+    git init
 
 Pushing releases to PyPI
 ========================
@@ -31,9 +40,15 @@ To publish a new version of your app to PyPI:
 Running the tests
 =================
 
-Easy:
+To run the tests against the current environment:
 
     ./manage.py test
+
+To run the tests against multiple environments, make sure you've installed
+`tox` using `pip install tox`, make sure you're not currently in a virtual
+environment, then simply run `tox`:
+
+    tox
 
 Changelog
 =========
