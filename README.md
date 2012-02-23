@@ -23,10 +23,9 @@ You'll want to clone this project, then create a fresh git repo for it:
 
     git clone git://github.com/dabapps/django-reusable-app.git my-project-name
     cd my-project-name
+    mv myproject packagename
     rm -rf .git
     git init
-
-    mv myproject packagename
 
 Edit `manage.py` and change the default `DJANGO_SETTINGS_MODULE` to
 `packagename.testsettings`.
