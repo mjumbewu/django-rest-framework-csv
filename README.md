@@ -21,13 +21,17 @@ Creating a new app
 
 You'll want to clone this project, then create a fresh git repo for it:
 
-    git clone git://github.com/dabapps/django-reusable-app.git my_project_name
-    cd my_project_name
+    git clone git://github.com/dabapps/django-reusable-app.git my-project-name
+    cd my-project-name
     rm -rf .git
     git init
 
-Finally edit `manage.py` and change the default `DJANGO_SETTINGS_MODULE` to
-`my_project_name.testsettings`.
+    mv myproject packagename
+
+Edit `manage.py` and change the default `DJANGO_SETTINGS_MODULE` to
+`packagename.testsettings`.
+
+Edit `setup.py` and update the settings at the top of the file.
 
 Pushing releases to PyPI
 ========================
