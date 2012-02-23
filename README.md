@@ -13,7 +13,7 @@ A simple template for creating reusable apps with Django.
 Includes:
 
 1. A `setup.py` that makes your life easy and doesn't suck.
-2. A simple testproject to make let you run the app's tests.
+2. A simple layout that lets you run the app's tests without installing it into an existing project.
 3. A `tox` config to allow you to run your tests against multiple environments.
 
 Creating a new app
