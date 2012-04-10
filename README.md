@@ -3,7 +3,7 @@ Django Reusable Apps
 
 **Simple template for reusable apps with Django.**
 
-**Author:** Tom Christie, [@_tomchristie][1].
+**Author:** Tom Christie, [Follow me on Twitter][1].
 
 Overview
 ========
@@ -13,7 +13,7 @@ A simple template for creating reusable apps with Django.
 Includes:
 
 1. A `setup.py` that makes your life easy and doesn't suck.
-2. A simple testproject to make let you run the app's tests.
+2. A simple layout that lets you run the app's tests without installing it into an existing project.
 3. A `tox` config to allow you to run your tests against multiple environments.
 
 Creating a new app
@@ -21,10 +21,14 @@ Creating a new app
 
 You'll want to clone this project, then create a fresh git repo for it:
 
-    git clone git://github.com/dabapps/django-reusable-app.git my_project_name
-    cd my_project_name
+    git clone git://github.com/dabapps/django-reusable-app.git my-project-name
+    cd my-project-name
+    mv myproject packagename
     rm -rf .git
     git init
+
+Edit `setup.py` and update the settings at the top of the file.
+Edit the `README`.
 
 Pushing releases to PyPI
 ========================

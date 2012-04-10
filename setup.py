@@ -9,10 +9,10 @@ import sys
 
 name = 'django-reusable-app'
 package = 'myproject'
-description = 'Simple template for reusable apps with Django.'
-url = 'http://github.com/dabapps/django-reusable-app'
-author = 'Tom Christie'
-author_email = 'tom@tomchristie.com'
+description = ''
+url = 'http://github.com/.../.../'
+author = ''
+author_email = ''
 license = 'BSD'
 install_requires = []
 
