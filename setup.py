@@ -12,6 +12,7 @@ package = 'myproject'
 description = 'Simple template for reusable apps with Django.'
 url = 'http://github.com/dabapps/django-reusable-app'
 author = 'Tom Christie'
+author_email = 'tom@tomchristie.com'
 license = 'BSD'
 install_requires = []
 
@@ -65,6 +66,7 @@ setup(
     license=license,
     description=description,
     author=author,
+    author_email=author_email,
     packages=get_packages(package),
     package_data=get_package_data(package),
     install_requires=install_requires

@@ -26,9 +26,6 @@ You'll want to clone this project, then create a fresh git repo for it:
     rm -rf .git
     git init
 
-Finally edit `manage.py` and change the default `DJANGO_SETTINGS_MODULE` to
-`my_project_name.testsettings`.
-
 Pushing releases to PyPI
 ========================
 
@@ -56,6 +53,13 @@ then simply run `tox`:
 
 Changelog
 =========
+
+1.0.1
+-----
+
+* Include author_email in setup.py
+* Move testsettings into top level dir
+* Update tox to test against Django 1.3, 1.4 (From 1.2, 1.3)
 
 1.0.0
 -----
