@@ -27,6 +27,7 @@ You'll want to clone this project, then create a fresh git repo for it:
     rm -rf .git
     git init
 
+Edit `testsettings.py` and update the app name in INSTALLED_APPS.
 Edit `setup.py` and update the settings at the top of the file.
 Edit the `README`.
 
