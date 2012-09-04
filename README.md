@@ -14,7 +14,7 @@ Includes:
 
 1. A `setup.py` that makes your life easy and doesn't suck.
 2. A simple layout that lets you run the app's tests without installing it into an existing project.
-3. A `tox` config to allow you to run your tests against multiple environments.
+3. A sample `.travis.yml` config file.
 
 Creating a new app
 ==================
@@ -49,14 +49,14 @@ To run the tests against the current environment:
 
     ./manage.py test
 
-To run the tests against multiple environments, install `tox` using
-`pip install tox`, make sure you're not currently in a virtual environment,
-then simply run `tox`:
-
-    tox
-
 Changelog
 =========
+
+1.1.0
+-----
+
+* Remove tox, add travis
+* Remove seperate LICENSE
 
 1.0.1
 -----

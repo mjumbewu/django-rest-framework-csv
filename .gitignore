@@ -2,5 +2,4 @@
 MANIFEST
 dist/
 build/
-.tox/
 *.egg-info/
