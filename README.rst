@@ -39,6 +39,11 @@ To run the tests against the current environment:
 Changelog
 =========
 
+1.0.1
+-----
+
+* Add the package manifest
+
 1.0.0
 -----
 
