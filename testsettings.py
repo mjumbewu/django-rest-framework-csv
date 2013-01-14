@@ -6,5 +6,5 @@ DATABASES = {
 }
 
 INSTALLED_APPS = (
-    'myproject',
+    'rest_framework_csv',
 )

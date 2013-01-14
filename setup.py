@@ -7,14 +7,14 @@ import os
 import sys
 
 
-name = 'django-reusable-app'
-package = 'myproject'
-description = ''
-url = 'http://github.com/.../.../'
-author = ''
-author_email = ''
+name = 'djangorestframework-csv'
+package = 'rest_framework_csv'
+description = 'CSV Tools for Django REST Framework'
+url = 'https://github.com/mjumbewu/django-rest-framework-csv'
+author = 'Mjumbe Wawatu Ukweli'
+author_email = 'mjumbewu@gmail.com'
 license = 'BSD'
-install_requires = []
+install_requires = ['djangorestframework']
 
 
 def get_version(package):
@@ -69,5 +69,17 @@ setup(
     author_email=author_email,
     packages=get_packages(package),
     package_data=get_package_data(package),
-    install_requires=install_requires
+    install_requires=install_requires,
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Environment :: Web Environment",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: BSD License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.6",
+        "Programming Language :: Python :: 2.7",
+        "Framework :: Django",
+    ],
 )
