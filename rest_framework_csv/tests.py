@@ -1,7 +1,11 @@
 #-*- coding:utf-8 -*-
+from StringIO import StringIO
 
 from django.test import TestCase
+
 from .renderers import CSVRenderer
+from .parsers import CSVParser
+
 
 class TestCSVRenderer (TestCase):
 
@@ -64,3 +68,24 @@ class TestCSVRenderer (TestCase):
 
         dump = renderer.render([{u'a': 1, u'b': u'hello\u2014goodbye', u'c': 'http://example.com/'}])
         self.assertEqual(dump, (u'a,b,c\r\n1,hello—goodbye,http://example.com/\r\n').encode('utf-8'))
+
+
+class TestCSVParser(TestCase):
+
+    def test_parse_two_lines_flat_csv(self):
+        parser = CSVParser()
+        csv_file = 'v1,v2,v3\r\na,1,2.3\r\nb,4,5.6\r\n'
+
+        data = parser.parse(StringIO(csv_file))
+
+        self.assertEqual(data, [{'v1': 'a', 'v2': '1', 'v3': '2.3'},
+                                {'v1': 'b', 'v2': '4', 'v3': '5.6'}])
+
+    def test_semi_colon_delimiter(self):
+        parser = CSVParser()
+        csv_file = 'v1;v2;v3\r\na;1;2.3\r\nb;4;5.6\r\n'
+
+        data = parser.parse(StringIO(csv_file), parser_context={'delimiter': ';'})
+
+        self.assertEqual(data, [{'v1': 'a', 'v2': '1', 'v3': '2.3'},
+                                {'v1': 'b', 'v2': '4', 'v3': '5.6'}])        
