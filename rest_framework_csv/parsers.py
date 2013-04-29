@@ -22,9 +22,7 @@ class CSVParser(BaseParser):
             header = rows.next()
             data = []
             for row in rows:
-                row_data = {}
-                for i, item in enumerate(row):
-                    row_data.update({header[i]: item})
+                row_data = dict(zip(header, row))
                 data.append(row_data)
             return data
         except Exception, exc:
