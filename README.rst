@@ -39,6 +39,11 @@ To run the tests against the current environment:
 Changelog
 =========
 
+1.1.0
+-----
+
+* Support simple CSV parsing; thanks to @sebastibe
+
 1.0.1
 -----
 
