@@ -2,6 +2,7 @@ import csv
 from collections import defaultdict
 from rest_framework.renderers import *
 from StringIO import StringIO
+from rest_framework_csv.orderedrows import OrderedRows
 
 class CSVRenderer(BaseRenderer):
     """
@@ -43,23 +44,24 @@ class CSVRenderer(BaseRenderer):
             # fall into.
             data = self.flatten_data(data)
 
-            # Get the set of all unique headers, and sort them.
-            headers = set()
-            for item in data:
-                headers.update(item.keys())
-            headers = sorted(headers)
+            # Get the set of all unique headers, and sort them (unless already provided).
+            if not data.header:
+                headers = set()
+                for item in data:
+                    headers.update(item.keys())
+                data.header = sorted(headers)
 
             # Create a row for each dictionary, filling in columns for which the
             # item has no data with None values.
             rows = []
             for item in data:
                 row = []
-                for key in headers:
+                for key in data.header:
                     row.append(item.get(key, None))
                 rows.append(row)
 
             # Return your "table", with the headers as the first row.
-            return [headers] + rows
+            return [data.header] + rows
 
         else:
             return []
@@ -70,7 +72,7 @@ class CSVRenderer(BaseRenderer):
         each exactly one level deep. The key for each value in the dictionaries
         designates the name of the column that the value will fall into.
         """
-        flat_data = []
+        flat_data = OrderedRows(data.header if hasattr(data, 'header') else None)
         for item in data:
             flat_item = self.flatten_item(item)
             flat_data.append(flat_item)

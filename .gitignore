@@ -4,3 +4,7 @@ dist/
 build/
 *.egg-info/
 *~
+
+/.settings/
+/.pydevproject
+/.project

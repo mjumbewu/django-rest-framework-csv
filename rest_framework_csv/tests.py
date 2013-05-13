@@ -69,6 +69,14 @@ class TestCSVRenderer (TestCase):
         dump = renderer.render([{u'a': 1, u'b': u'hello\u2014goodbye', u'c': 'http://example.com/'}])
         self.assertEqual(dump, (u'a,b,c\r\n1,hello—goodbye,http://example.com/\r\n').encode('utf-8'))
 
+    def test_render_ordered_rows(self):
+        parser = CSVParser()
+        csv_file = 'v1,v2,v3\r\na,1,2.3\r\nb,4,5.6\r\n'
+        data = parser.parse(StringIO(csv_file))
+        renderer = CSVRenderer()
+        dump = renderer.render(data)
+        self.assertEqual(dump, csv_file) # field order should be maintained
+
 
 class TestCSVParser(TestCase):
 
