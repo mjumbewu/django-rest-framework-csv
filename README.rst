@@ -39,6 +39,13 @@ To run the tests against the current environment:
 Changelog
 =========
 
+1.2.0
+-----
+
+* Support consistent ordering of fields in rendered CSV; thanks to @robguttman
+* Support specifying particular fields/headers in custom CSV renderer by 
+  overriding the ``headers`` attribute.
+
 1.1.0
 -----
 
