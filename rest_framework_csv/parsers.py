@@ -2,6 +2,7 @@ import csv
 
 from rest_framework.parsers import BaseParser
 from rest_framework.exceptions import ParseError
+from rest_framework_csv.orderedrows import OrderedRows
 
 
 class CSVParser(BaseParser):
@@ -19,10 +20,9 @@ class CSVParser(BaseParser):
 
         try:
             rows = csv.reader(stream, delimiter=delimiter)
-            header = rows.next()
-            data = []
+            data = OrderedRows(rows.next())
             for row in rows:
-                row_data = dict(zip(header, row))
+                row_data = dict(zip(data.header, row))
                 data.append(row_data)
             return data
         except Exception, exc:
