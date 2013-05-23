@@ -77,6 +77,17 @@ class TestCSVRenderer (TestCase):
         dump = renderer.render(data)
         self.assertEqual(dump, csv_file) # field order should be maintained
 
+    def test_render_subset_of_fields(self):
+        renderer = CSVRenderer()
+        renderer.headers = ['a', 'c.x']
+
+        data = [{'a': 1, 'b': 2},
+                {'b': 3, 'c': {'x': 4, 'y': 5}}]
+        dump = renderer.render(data)
+        self.assertEqual(dump, 'a,c.x\r\n'
+                               '1,\r\n,'
+                               '4\r\n')
+
 
 class TestCSVParser(TestCase):
 

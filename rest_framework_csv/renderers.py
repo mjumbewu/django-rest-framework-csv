@@ -12,6 +12,7 @@ class CSVRenderer(BaseRenderer):
     media_type = 'text/csv'
     format = 'csv'
     level_sep = '.'
+    headers = None
 
     def render(self, data, media_type=None, renderer_context=None):
         """
@@ -43,6 +44,7 @@ class CSVRenderer(BaseRenderer):
             # each item designates the name of the column that the item will
             # fall into.
             data = self.flatten_data(data)
+            data.header = data.header or self.headers
 
             # Get the set of all unique headers, and sort them (unless already provided).
             if not data.header:
