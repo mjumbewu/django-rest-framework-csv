@@ -18,10 +18,10 @@ Usage
 
     from rest_framework.views import APIView
     from rest_framework.settings import api_settings
-    from rest_framework_csv import CSVRenderer
+    from rest_framework_csv import renderers as r
 
     class MyView (APIView):
-        renderer_classes = (CSVRenderer, ) + api_settings.DEFAULT_RENDERER_CLASSES
+        renderer_classes = (r.CSVRenderer, ) + api_settings.DEFAULT_RENDERER_CLASSES
         ...
 
 For more information about using renderers with Django REST Framework, see the
