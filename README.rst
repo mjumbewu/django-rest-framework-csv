@@ -5,7 +5,7 @@ djangorestframework-csv
 |build status|_
 
 .. |build status| image:: https://secure.travis-ci.org/mjumbewu/django-rest-framework-csv.png
-.. _build status: https://secure.travis-ci.org/mjumbewu/django-rest-framework-csv
+.. _build status: https://travis-ci.org/mjumbewu/django-rest-framework-csv
 
 **CSV Tools for Django REST Framework**
 
@@ -14,7 +14,9 @@ djangorestframework-csv
 Usage
 -----
 
-*views.py*::
+*views.py*
+
+.. code-block:: python
 
     from rest_framework.views import APIView
     from rest_framework.settings import api_settings
@@ -33,7 +35,9 @@ Running the tests
 
 To run the tests against the current environment:
 
-    ./manage.py test
+.. code-block:: bash
+
+    $ ./manage.py test
 
 
 Changelog
