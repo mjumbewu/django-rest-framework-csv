@@ -11,6 +11,13 @@ djangorestframework-csv
 
 **Author:** Mjumbe Wawatu Poe, `Follow me on Twitter <http://www.twitter.com/mjumbewu>`_.
 
+Installation
+------------
+
+.. code-block:: bash
+
+    $ pip install djangorestframework-csv
+
 Usage
 -----
 
