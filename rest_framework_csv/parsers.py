@@ -20,10 +20,10 @@ class CSVParser(BaseParser):
 
         try:
             rows = csv.reader(stream, delimiter=delimiter)
-            data = OrderedRows(rows.next())
+            data = OrderedRows(next(rows))
             for row in rows:
-                row_data = dict(zip(data.header, row))
+                row_data = dict(list(zip(data.header, row)))
                 data.append(row_data)
             return data
-        except Exception, exc:
-            raise ParseError('CSV parse error - %s' % unicode(exc))
+        except Exception as exc:
+            raise ParseError('CSV parse error - %s' % str(exc))

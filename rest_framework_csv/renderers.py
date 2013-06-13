@@ -1,7 +1,7 @@
 import csv
 from collections import defaultdict
 from rest_framework.renderers import *
-from StringIO import StringIO
+from io import StringIO
 from rest_framework_csv.orderedrows import OrderedRows
 
 class CSVRenderer(BaseRenderer):
@@ -27,7 +27,7 @@ class CSVRenderer(BaseRenderer):
         for row in table:
             # Assume that strings should be encoded as UTF-8
             csv_writer.writerow([
-                elem.encode('utf-8') if isinstance(elem, basestring) else elem
+                elem.encode('utf-8') if isinstance(elem, str) else elem
                 for elem in row
             ])
 
@@ -50,7 +50,7 @@ class CSVRenderer(BaseRenderer):
             if not data.header:
                 headers = set()
                 for item in data:
-                    headers.update(item.keys())
+                    headers.update(list(item.keys()))
                 data.header = sorted(headers)
 
             # Create a row for each dictionary, filling in columns for which the
@@ -104,7 +104,7 @@ class CSVRenderer(BaseRenderer):
 
         """
         nested_item = {}
-        for header, val in flat_item.iteritems():
+        for header, val in flat_item.items():
             nested_header = self.level_sep.join([prefix, header]) if header else prefix
             nested_item[nested_header] = val
         return nested_item
@@ -120,7 +120,7 @@ class CSVRenderer(BaseRenderer):
 
     def flatten_dict(self, d):
         flat_dict = {}
-        for key, item in d.iteritems():
+        for key, item in d.items():
             key = str(key)
             flat_item = self.flatten_item(item)
             nested_item = self.nest_flat_item(flat_item, key)
