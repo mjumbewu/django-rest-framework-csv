@@ -24,18 +24,19 @@ Usage
         renderer_classes = (r.CSVRenderer, ) + api_settings.DEFAULT_RENDERER_CLASSES
         ...
 
-For more information about using renderers with Django REST Framework, see the
-`API Guide <http://django-rest-framework.org/api-guide/renderers.html>`_ or the
-`Tutorial <http://django-rest-framework.org/tutorial/1-serialization.html>`_.
-
-For example, to return CSV add the following to the `settings.py` file::
+Alternatively, to set CSV as a default rendered format, add the following to the 
+`settings.py` file::
     
     REST_FRAMEWORK = {
         # specifying the renderers
         'DEFAULT_RENDERER_CLASSES': (            
-        'rest_framework_csv.renderers.CSVRenderer', 
+            'rest_framework_csv.renderers.CSVRenderer', 
         ),
     }
+
+For more information about using renderers with Django REST Framework, see the
+`API Guide <http://django-rest-framework.org/api-guide/renderers.html>`_ or the
+`Tutorial <http://django-rest-framework.org/tutorial/1-serialization.html>`_.
 
 Running the tests
 -----------------
