@@ -39,7 +39,7 @@ Pagination
 
 Using the renderer with paginated data is also possible, with a little extension.
 A paginated CSV renderer is constructed like below, and should be used with views
-that paginate data:
+that paginate data::
 
     from rest_framework_csv.renderers import CSVRenderer
     
