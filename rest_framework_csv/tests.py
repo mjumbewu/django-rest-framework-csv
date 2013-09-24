@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-from StringIO import StringIO
+from io import StringIO
 
 from django.test import TestCase
 
@@ -59,15 +59,15 @@ class TestCSVRenderer (TestCase):
     def test_tablize_a_list_with_unicode_elements(self):
         renderer = CSVRenderer()
 
-        flat = renderer.tablize([{u'a': 1, u'b': u'hello\u2014goodbye'}])
-        self.assertEqual(flat, [[u'a', u'b'            ],
-                                [1   , u'hello—goodbye']])
+        flat = renderer.tablize([{'a': 1, 'b': 'hello\u2014goodbye'}])
+        self.assertEqual(flat, [['a', 'b'            ],
+                                [1   , 'hello—goodbye']])
 
     def test_render_a_list_with_unicode_elements(self):
         renderer = CSVRenderer()
 
-        dump = renderer.render([{u'a': 1, u'b': u'hello\u2014goodbye', u'c': 'http://example.com/'}])
-        self.assertEqual(dump, (u'a,b,c\r\n1,hello—goodbye,http://example.com/\r\n').encode('utf-8'))
+        dump = renderer.render([{'a': 1, 'b': 'hello\u2014goodbye', 'c': 'http://example.com/'}])
+        self.assertEqual(dump, ('a,b,c\r\n1,hello—goodbye,http://example.com/\r\n').encode('utf-8'))
 
     def test_render_ordered_rows(self):
         parser = CSVParser()
