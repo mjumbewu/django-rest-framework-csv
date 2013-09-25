@@ -35,7 +35,7 @@ Usage
 
 Alternatively, to set CSV as a default rendered format, add the following to the 
 `settings.py` file::
-    
+
     REST_FRAMEWORK = {
         # specifying the renderers
         'DEFAULT_RENDERER_CLASSES': (            
@@ -76,6 +76,11 @@ To run the tests against the current environment:
 
 Changelog
 =========
+
+1.3.0
+-----
+
+* Support for Python 3, derived from work by @samdobson
 
 1.2.0
 -----
