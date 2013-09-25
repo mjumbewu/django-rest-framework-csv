@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 import csv
 
 from rest_framework.parsers import BaseParser
@@ -17,7 +16,7 @@ class CSVParser(BaseParser):
 
     def parse(self, stream, media_type=None, parser_context=None):
         parser_context = parser_context or {}
-        delimiter = parser_context.get('delimiter', b',')
+        delimiter = parser_context.get('delimiter', ',')
 
         try:
             rows = csv.reader(stream, delimiter=delimiter)

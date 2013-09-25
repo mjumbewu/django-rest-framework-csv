@@ -1,6 +1,6 @@
 #-*- coding:utf-8 -*-
 from __future__ import unicode_literals
-from six import StringIO
+from six import StringIO, PY3
 
 from django.test import TestCase
 
@@ -68,6 +68,8 @@ class TestCSVRenderer (TestCase):
         renderer = CSVRenderer()
 
         dump = renderer.render([{'a': 1, 'b': 'hello\u2014goodbye', 'c': 'http://example.com/'}])
+        if PY3:
+            dump = dump.encode('utf-8')
         self.assertEqual(dump, ('a,b,c\r\n1,hello—goodbye,http://example.com/\r\n').encode('utf-8'))
 
     def test_render_ordered_rows(self):
@@ -105,7 +107,8 @@ class TestCSVParser(TestCase):
         parser = CSVParser()
         csv_file = 'v1;v2;v3\r\na;1;2.3\r\nb;4;5.6\r\n'
 
-        data = parser.parse(StringIO(csv_file), parser_context={'delimiter': b';'})
+        delimiter = ';' if PY3 else b';'
+        data = parser.parse(StringIO(csv_file), parser_context={'delimiter': delimiter})
 
         self.assertEqual(data, [{'v1': 'a', 'v2': '1', 'v3': '2.3'},
                                 {'v1': 'b', 'v2': '4', 'v3': '5.6'}])        

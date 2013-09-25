@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 import csv
 from collections import defaultdict
 from rest_framework.renderers import *
-from six import StringIO, string_types
+from six import StringIO, text_type, PY2
 from rest_framework_csv.orderedrows import OrderedRows
 
 class CSVRenderer(BaseRenderer):
@@ -28,7 +28,7 @@ class CSVRenderer(BaseRenderer):
         for row in table:
             # Assume that strings should be encoded as UTF-8
             csv_writer.writerow([
-                elem.encode('utf-8') if isinstance(elem, string_types) else elem
+                elem.encode('utf-8') if isinstance(elem, text_type) and PY2 else elem
                 for elem in row
             ])
 
