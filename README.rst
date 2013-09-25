@@ -34,12 +34,14 @@ Usage
         ...
 
 Alternatively, to set CSV as a default rendered format, add the following to the 
-`settings.py` file::
+`settings.py` file:
+
+.. code-block:: python
 
     REST_FRAMEWORK = {
         # specifying the renderers
-        'DEFAULT_RENDERER_CLASSES': (            
-            'rest_framework_csv.renderers.CSVRenderer', 
+        'DEFAULT_RENDERER_CLASSES': (
+            'rest_framework_csv.renderers.CSVRenderer',
         ),
     }
 
@@ -48,13 +50,15 @@ Pagination
 
 Using the renderer with paginated data is also possible, with a little extension.
 A paginated CSV renderer is constructed like below, and should be used with views
-that paginate data::
+that paginate data
+
+.. code-block:: python
 
     from rest_framework_csv.renderers import CSVRenderer
-    
+
     class PaginatedCSVRenderer (CSVRenderer):
         results_field = 'results'
-    
+
         def render(self, data, media_type=None, renderer_context=None):
             if not isinstance(data, list):
                 data = data.get(self.results_field, [])
@@ -80,29 +84,29 @@ Changelog
 1.3.0
 -----
 
-* Support for Python 3, derived from work by @samdobson
+- Support for Python 3, derived from work by @samdobson
 
 1.2.0
 -----
 
-* Support consistent ordering of fields in rendered CSV; thanks to @robguttman
-* Support specifying particular fields/headers in custom CSV renderer by 
+- Support consistent ordering of fields in rendered CSV; thanks to @robguttman
+- Support specifying particular fields/headers in custom CSV renderer by
   overriding the ``headers`` attribute.
 
 1.1.0
 -----
 
-* Support simple CSV parsing; thanks to @sebastibe
+- Support simple CSV parsing; thanks to @sebastibe
 
 1.0.1
 -----
 
-* Add the package manifest
+- Add the package manifest
 
 1.0.0
 -----
 
-* Initial release
+- Initial release
 
 
 License
