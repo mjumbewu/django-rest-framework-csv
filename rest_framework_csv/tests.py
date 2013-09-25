@@ -1,5 +1,6 @@
 #-*- coding:utf-8 -*-
-from io import StringIO
+from __future__ import unicode_literals
+from six import StringIO
 
 from django.test import TestCase
 
@@ -104,7 +105,7 @@ class TestCSVParser(TestCase):
         parser = CSVParser()
         csv_file = 'v1;v2;v3\r\na;1;2.3\r\nb;4;5.6\r\n'
 
-        data = parser.parse(StringIO(csv_file), parser_context={'delimiter': ';'})
+        data = parser.parse(StringIO(csv_file), parser_context={'delimiter': b';'})
 
         self.assertEqual(data, [{'v1': 'a', 'v2': '1', 'v3': '2.3'},
                                 {'v1': 'b', 'v2': '4', 'v3': '5.6'}])        

@@ -14,7 +14,7 @@ url = 'https://github.com/mjumbewu/django-rest-framework-csv'
 author = 'Mjumbe Wawatu Ukweli'
 author_email = 'mjumbewu@gmail.com'
 license = 'BSD'
-install_requires = ['djangorestframework']
+install_requires = ['djangorestframework', 'six']
 
 
 def get_version(package):

@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import csv
 
 from rest_framework.parsers import BaseParser
@@ -16,13 +17,13 @@ class CSVParser(BaseParser):
 
     def parse(self, stream, media_type=None, parser_context=None):
         parser_context = parser_context or {}
-        delimiter = parser_context.get('delimiter', ',')
+        delimiter = parser_context.get('delimiter', b',')
 
         try:
             rows = csv.reader(stream, delimiter=delimiter)
             data = OrderedRows(next(rows))
             for row in rows:
-                row_data = dict(list(zip(data.header, row)))
+                row_data = dict(zip(data.header, row))
                 data.append(row_data)
             return data
         except Exception as exc:
