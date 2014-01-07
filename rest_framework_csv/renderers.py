@@ -12,7 +12,6 @@ except ImportError:
     import sys    
     PY2 = sys.version_info[0] == 2
     
-
 class CSVRenderer(BaseRenderer):
     """
     Renderer which serializes to CSV
