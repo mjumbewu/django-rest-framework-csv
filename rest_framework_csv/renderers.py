@@ -29,6 +29,9 @@ class CSVRenderer(BaseRenderer):
         if data is None:
             return ''
 
+        if type(data) is not list:
+            data = [data]
+
         table = self.tablize(data)
         csv_buffer = StringIO()
         csv_writer = csv.writer(csv_buffer)
