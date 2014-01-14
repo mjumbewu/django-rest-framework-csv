@@ -2,9 +2,16 @@ from __future__ import unicode_literals
 import csv
 from collections import defaultdict
 from rest_framework.renderers import *
-from six import StringIO, text_type, PY2
+from six import StringIO, text_type
 from rest_framework_csv.orderedrows import OrderedRows
 
+# six versions 1.3.0 and previous don't have PY2
+try:
+    from six import PY2
+except ImportError:
+    import sys    
+    PY2 = sys.version_info[0] == 2
+    
 class CSVRenderer(BaseRenderer):
     """
     Renderer which serializes to CSV
