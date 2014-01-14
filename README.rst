@@ -81,6 +81,12 @@ To run the tests against the current environment:
 Changelog
 =========
 
+1.3.1
+-----
+
+- Renderer handles case where data is not a list by wrapping data in a list, via pull request from @dougvk
+- Better cross Python version support, via @paurullan and @vishen
+
 1.3.0
 -----
 
