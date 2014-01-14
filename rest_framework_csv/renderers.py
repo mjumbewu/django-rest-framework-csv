@@ -29,7 +29,7 @@ class CSVRenderer(BaseRenderer):
         if data is None:
             return ''
 
-        if type(data) is not list:
+        if not isinstance(data, list):
             data = [data]
 
         table = self.tablize(data)
