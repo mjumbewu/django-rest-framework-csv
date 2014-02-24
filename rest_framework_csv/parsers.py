@@ -1,4 +1,5 @@
 import csv
+import codecs
 
 from rest_framework.parsers import BaseParser
 from rest_framework.exceptions import ParseError
@@ -19,7 +20,8 @@ class CSVParser(BaseParser):
         delimiter = parser_context.get('delimiter', ',')
 
         try:
-            rows = csv.reader(stream, delimiter=delimiter)
+            utf8_stream = codecs.EncodedFile(stream,"utf-8")
+            rows = csv.reader(utf8_stream, delimiter=delimiter)
             data = OrderedRows(next(rows))
             for row in rows:
                 row_data = dict(zip(data.header, row))
