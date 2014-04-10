@@ -111,4 +111,19 @@ class TestCSVParser(TestCase):
         data = parser.parse(StringIO(csv_file), parser_context={'delimiter': delimiter})
 
         self.assertEqual(data, [{'v1': 'a', 'v2': '1', 'v3': '2.3'},
-                                {'v1': 'b', 'v2': '4', 'v3': '5.6'}])        
+                                {'v1': 'b', 'v2': '4', 'v3': '5.6'}])
+
+    def test_parse_file_with_normal_newlines(self):
+        parser = CSVParser()
+        csv_file = 'Name,ID,Country\rKathryn Miller,67,United States\rJen Mark,78,Canada'
+
+        data = parser.parse(StringIO(csv_file))
+        self.assertEqual(data, [{'Name': 'Kathryn Miller', 'ID': '67', 'Country': 'United States'},
+                                {'Name': 'Jen Mark',       'ID': '78', 'Country': 'Canada'}])
+
+    def test_unicode_parsing(self):
+        parser = CSVParser()
+        csv_file = 'col1,col2\r\nhello—goodbye,here—there'
+
+        data = parser.parse(StringIO(csv_file))
+        self.assertEqual(data, [{'col1': 'hello—goodbye', 'col2': 'here—there'}])
