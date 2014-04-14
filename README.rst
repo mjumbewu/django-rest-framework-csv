@@ -33,7 +33,7 @@ Usage
         renderer_classes = (r.CSVRenderer, ) + api_settings.DEFAULT_RENDERER_CLASSES
         ...
 
-Alternatively, to set CSV as a default rendered format, add the following to the 
+Alternatively, to set CSV as a default rendered format, add the following to the
 `settings.py` file:
 
 .. code-block:: python
@@ -80,6 +80,11 @@ To run the tests against the current environment:
 
 Changelog
 =========
+
+1.3.2/1.3.3
+-----------
+
+- Support unicode CSV parsing, and universal newlines
 
 1.3.1
 -----
