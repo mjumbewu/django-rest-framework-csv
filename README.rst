@@ -84,7 +84,7 @@ Changelog
 1.3.2/1.3.3
 -----------
 
-- Support unicode CSV parsing, and universal newlines
+- Support unicode CSV parsing, and universal newlines, with thanks to @brocksamson
 
 1.3.1
 -----
