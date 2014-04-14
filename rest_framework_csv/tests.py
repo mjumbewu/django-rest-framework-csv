@@ -113,13 +113,25 @@ class TestCSVParser(TestCase):
         self.assertEqual(data, [{'v1': 'a', 'v2': '1', 'v3': '2.3'},
                                 {'v1': 'b', 'v2': '4', 'v3': '5.6'}])
 
-    def test_parse_file_with_normal_newlines(self):
+    def test_parse_stream_with_only_carriage_returns(self):
         parser = CSVParser()
         csv_file = 'Name,ID,Country\rKathryn Miller,67,United States\rJen Mark,78,Canada'
 
         data = parser.parse(StringIO(csv_file))
         self.assertEqual(data, [{'Name': 'Kathryn Miller', 'ID': '67', 'Country': 'United States'},
                                 {'Name': 'Jen Mark',       'ID': '78', 'Country': 'Canada'}])
+
+    def test_parse_file_with_only_carriage_returns(self):
+        import os.path
+        CURDIR = os.path.dirname(__file__)
+        CSVFILE = os.path.join(CURDIR, 'testfixtures', 'nonewlines.csv')
+
+        parser = CSVParser()
+
+        with open(CSVFILE, 'rU') as csv_file:
+            data = parser.parse(csv_file)
+            self.assertEqual(data, [{'Name': 'Kathryn Miller', 'ID': '67', 'Country': 'United States'},
+                                    {'Name': 'Jen Mark',       'ID': '78', 'Country': 'Canada'}])
 
     def test_unicode_parsing(self):
         parser = CSVParser()
