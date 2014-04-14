@@ -1,6 +1,7 @@
 import csv
 import codecs
 import io
+import six
 
 from django.conf import settings
 from rest_framework.parsers import BaseParser
@@ -8,17 +9,25 @@ from rest_framework.exceptions import ParseError
 from rest_framework_csv.orderedrows import OrderedRows
 
 
-def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, charset='utf-8', **kwargs):
-    # csv.py doesn't do Unicode; encode temporarily:
-    csv_reader = csv.reader(charset_encoder(unicode_csv_data, charset=charset),
-                            dialect=dialect, **kwargs)
-    for row in csv_reader:
-        # decode back to Unicode, cell by cell:
-        yield [cell.decode(charset) for cell in row]
+def preprocess_stream(stream, charset):
+    if six.PY2:
+        # csv.py doesn't do Unicode; encode temporarily:
+        return (chunk.encode(charset) for chunk in stream)
+    else:
+        return stream
 
-def charset_encoder(unicode_csv_data, charset='utf-8'):
-    for line in unicode_csv_data:
-        yield line.encode(charset)
+def postprocess_row(row, charset):
+    if six.PY2:
+        # decode back to Unicode, cell by cell:
+        return [cell.decode(charset) for cell in row]
+    else:
+        return row
+
+def unicode_csv_reader(csv_data, dialect=csv.excel, charset='utf-8', **kwargs):
+    csv_data = preprocess_stream(csv_data, charset)
+    csv_reader = csv.reader(csv_data, dialect=dialect, **kwargs)
+    for row in csv_reader:
+        yield postprocess_row(row, charset)
 
 def universal_newlines(stream):
     for intermediate_line in stream:
