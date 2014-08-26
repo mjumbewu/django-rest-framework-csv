@@ -1,11 +1,13 @@
 #-*- coding:utf-8 -*-
 from __future__ import unicode_literals
 from six import StringIO, PY3
+from types import GeneratorType
 
 from django.test import TestCase
 
-from .renderers import CSVRenderer
+from .renderers import CSVRenderer, CSVStreamingRenderer
 from .parsers import CSVParser
+
 
 
 class TestCSVRenderer (TestCase):
@@ -90,6 +92,31 @@ class TestCSVRenderer (TestCase):
         self.assertEqual(dump, 'a,c.x\r\n'
                                '1,\r\n,'
                                '4\r\n')
+
+
+class TestCSVStreamingRenderer(TestCase):
+
+    def setUp(self):
+        self.headers = ['a', 'b']
+        self.data = [{'a': 1, 'b': 2}]
+
+
+    def test_renderer_return_type(self):
+        renderer = CSVStreamingRenderer()
+        renderer.headers = self.headers
+        dump = renderer.render(self.data)
+        self.assertIsInstance(dump, GeneratorType)
+
+    def test_renderer_value(self):
+        renderer = CSVRenderer()
+        renderer.headers = self.headers
+
+        streaming_renderer = CSVStreamingRenderer()
+        streaming_renderer.headers = self.headers
+
+        renderer_data = renderer.render(self.data)
+        streaming_renderer_data = ''.join(streaming_renderer.render(self.data))
+        self.assertEqual(renderer_data, streaming_renderer_data)
 
 
 class TestCSVParser(TestCase):
