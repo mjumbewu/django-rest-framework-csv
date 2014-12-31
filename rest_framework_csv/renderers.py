@@ -4,6 +4,7 @@ from collections import defaultdict
 from rest_framework.renderers import *
 from six import StringIO, text_type
 from rest_framework_csv.orderedrows import OrderedRows
+from rest_framework_csv.misc import Echo
 
 # six versions 1.3.0 and previous don't have PY2
 try:
@@ -141,3 +142,38 @@ class CSVRenderer(BaseRenderer):
 
 class CSVRendererWithUnderscores (CSVRenderer):
     level_sep = '_'
+
+
+class CSVStreamingRenderer(CSVRenderer):
+
+    def render(self, data, media_type=None, renderer_context=None):
+        """
+        Renders serialized *data* into CSV to be used with Django
+        StreamingHttpResponse. We need to return a generator here, so Django
+        can iterate over it, rendering and returning each line.
+
+        >>> renderer = CSVStreamingRenderer()
+        >>> renderer.headers = ['a', 'b']
+        >>> data = [{'a': 1, 'b': 2}]
+        >>> from django.http import StreamingHttpResponse
+        >>> response = StreamingHttpResponse(renderer.render(data),
+                                             content_type='text/csv')
+        >>> response['Content-Disposition'] = 'attachment; filename="f.csv"'
+        >>> # return response
+
+        """
+        if data is None:
+            yield ''
+
+        if not isinstance(data, list):
+            data = [data]
+
+        table = self.tablize(data)
+        csv_buffer = Echo()
+        csv_writer = csv.writer(csv_buffer)
+        for row in table:
+            # Assume that strings should be encoded as UTF-8
+            yield csv_writer.writerow([
+                elem.encode('utf-8') if isinstance(elem, text_type) and PY2 else elem
+                for elem in row
+            ])
