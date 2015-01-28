@@ -23,6 +23,10 @@ class CSVRenderer(BaseRenderer):
     level_sep = '.'
     headers = None
 
+    def __init__(self, delimiter=',', *args, **kwargs):
+        self.delimiter = delimiter
+        super(CSVRenderer, self).__init__(self, *args, **kwargs)
+
     def render(self, data, media_type=None, renderer_context=None):
         """
         Renders serialized *data* into CSV. For a dictionary:
@@ -35,7 +39,7 @@ class CSVRenderer(BaseRenderer):
 
         table = self.tablize(data)
         csv_buffer = StringIO()
-        csv_writer = csv.writer(csv_buffer)
+        csv_writer = csv.writer(csv_buffer, delimiter=self.delimiter)
         for row in table:
             # Assume that strings should be encoded as UTF-8
             csv_writer.writerow([
