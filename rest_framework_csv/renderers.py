@@ -25,7 +25,7 @@ class CSVRenderer(BaseRenderer):
 
     def __init__(self, delimiter=',', *args, **kwargs):
         self.delimiter = delimiter
-        super(CSVRenderer, self).__init__(self, *args, **kwargs)
+        super(CSVRenderer, self).__init__(*args, **kwargs)
 
     def render(self, data, media_type=None, renderer_context=None):
         """
