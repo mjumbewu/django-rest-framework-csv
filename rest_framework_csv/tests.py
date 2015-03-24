@@ -97,16 +97,17 @@ class TestCSVRenderer (TestCase):
 
     def test_render_data_with_writer_opts(self):
         renderer = CSVRenderer()
-        renderer = CSVRenderer()
         renderer.headers = ['a', 'b']
         data = [{'a': 'test', 'b': 'hello'}, {'a': 'foo', 'b': 'bar'}]
-        dump = renderer.render(data, writer_opts={
-            'delimiter': ';',
-            'quoting': csv.QUOTE_MINIMAL
-        })
-        self.assertEquals(dump.count(';'),  4)
-        self.assertIn("'test'", dump)
-        self.assertIn("'hello'", dump)
+        writer_opts = {
+            'quoting': csv.QUOTE_ALL,
+            'quotechar': b'|',
+            'delimiter': b';',
+        }
+        dump = renderer.render(data, writer_opts=writer_opts)
+        self.assertEquals(dump.count(';'), 3)
+        self.assertIn("|test|", dump)
+        self.assertIn("|hello|", dump)
 
 
 class TestCSVStreamingRenderer(TestCase):
@@ -114,7 +115,6 @@ class TestCSVStreamingRenderer(TestCase):
     def setUp(self):
         self.headers = ['a', 'b']
         self.data = [{'a': 1, 'b': 2}]
-
 
     def test_renderer_return_type(self):
         renderer = CSVStreamingRenderer()
