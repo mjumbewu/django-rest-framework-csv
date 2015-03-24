@@ -1,5 +1,7 @@
 #-*- coding:utf-8 -*-
 from __future__ import unicode_literals
+
+import csv
 from six import StringIO, PY3
 from types import GeneratorType
 
@@ -92,6 +94,19 @@ class TestCSVRenderer (TestCase):
         self.assertEqual(dump, 'a,c.x\r\n'
                                '1,\r\n,'
                                '4\r\n')
+
+    def test_render_data_with_writer_opts(self):
+        renderer = CSVRenderer()
+        renderer = CSVRenderer()
+        renderer.headers = ['a', 'b']
+        data = [{'a': 'test', 'b': 'hello'}, {'a': 'foo', 'b': 'bar'}]
+        dump = renderer.render(data, writer_opts={
+            'delimiter': ';',
+            'quoting': csv.QUOTE_MINIMAL
+        })
+        self.assertEquals(dump.count(';'),  4)
+        self.assertIn("'test'", dump)
+        self.assertIn("'hello'", dump)
 
 
 class TestCSVStreamingRenderer(TestCase):
