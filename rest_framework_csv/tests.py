@@ -101,8 +101,8 @@ class TestCSVRenderer (TestCase):
         data = [{'a': 'test', 'b': 'hello'}, {'a': 'foo', 'b': 'bar'}]
         writer_opts = {
             'quoting': csv.QUOTE_ALL,
-            'quotechar': b'|',
-            'delimiter': b';',
+            'quotechar': '|' if PY3 else b'|',
+            'delimiter': ';' if PY3 else b';',
         }
         dump = renderer.render(data, writer_opts=writer_opts)
         self.assertEquals(dump.count(';'), 3)
