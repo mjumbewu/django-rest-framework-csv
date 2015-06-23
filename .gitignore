@@ -8,3 +8,4 @@ build/
 /.settings/
 /.pydevproject
 /.project
+.tox/
