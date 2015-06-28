@@ -81,6 +81,12 @@ To run the tests against the current environment:
 Changelog
 =========
 
+1.3.4
+-----
+
+- Support streaming CSV rendering, via @ivancrneto
+- Improved test configuration and project metadata, via @ticosax
+
 1.3.2/1.3.3
 -----------
 
