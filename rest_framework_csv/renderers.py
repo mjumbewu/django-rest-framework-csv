@@ -1,6 +1,5 @@
 from __future__ import unicode_literals
 import csv
-from collections import defaultdict
 from rest_framework.renderers import *
 from six import StringIO, text_type
 from rest_framework_csv.orderedrows import OrderedRows
@@ -10,9 +9,10 @@ from rest_framework_csv.misc import Echo
 try:
     from six import PY2
 except ImportError:
-    import sys    
+    import sys
     PY2 = sys.version_info[0] == 2
-    
+
+
 class CSVRenderer(BaseRenderer):
     """
     Renderer which serializes to CSV
@@ -23,7 +23,7 @@ class CSVRenderer(BaseRenderer):
     level_sep = '.'
     headers = None
 
-    def render(self, data, media_type=None, renderer_context=None):
+    def render(self, data, media_type=None, renderer_context=None, writer_opts=None):
         """
         Renders serialized *data* into CSV. For a dictionary:
         """
@@ -33,9 +33,12 @@ class CSVRenderer(BaseRenderer):
         if not isinstance(data, list):
             data = [data]
 
+        if writer_opts is None:
+            writer_opts = {}
+
         table = self.tablize(data)
         csv_buffer = StringIO()
-        csv_writer = csv.writer(csv_buffer)
+        csv_writer = csv.writer(csv_buffer, **writer_opts)
         for row in table:
             # Assume that strings should be encoded as UTF-8
             csv_writer.writerow([
