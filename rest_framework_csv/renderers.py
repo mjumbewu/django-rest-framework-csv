@@ -22,14 +22,19 @@ class CSVRenderer(BaseRenderer):
     format = 'csv'
     level_sep = '.'
     headers = None
+    labels = None
 
-    def render(self, data, media_type=None, renderer_context=None, writer_opts=None):
+    def render(self, data, media_type=None, renderer_context={}, writer_opts=None):
         """
         Renders serialized *data* into CSV. For a dictionary:
         """
         if data is None:
             return ''
 
+        # {'<field>':'<label>'}
+        self.labels = renderer_context.get('labels', self.labels)
+        self.headers = renderer_context.get('headers', self.headers)
+        
         if not isinstance(data, list):
             data = [data]
 
@@ -78,7 +83,10 @@ class CSVRenderer(BaseRenderer):
                 rows.append(row)
 
             # Return your "table", with the headers as the first row.
-            return [data.header] + rows
+            if self.labels:
+                return [[self.labels.get(x, x) for x in data.header]] + rows
+            else:
+                return [data.header] + rows
 
         else:
             return []
@@ -149,7 +157,7 @@ class CSVRendererWithUnderscores (CSVRenderer):
 
 class CSVStreamingRenderer(CSVRenderer):
 
-    def render(self, data, media_type=None, renderer_context=None):
+    def render(self, data, media_type=None, renderer_context={}):
         """
         Renders serialized *data* into CSV to be used with Django
         StreamingHttpResponse. We need to return a generator here, so Django
@@ -168,6 +176,8 @@ class CSVStreamingRenderer(CSVRenderer):
         if data is None:
             yield ''
 
+        self.labels = renderer_context.get('labels', self.labels)
+        
         if not isinstance(data, list):
             data = [data]
 
