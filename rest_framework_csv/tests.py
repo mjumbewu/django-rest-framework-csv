@@ -67,6 +67,18 @@ class TestCSVRenderer (TestCase):
         flat = renderer.tablize([{'a': 1, 'b': 'hello\u2014goodbye'}])
         self.assertEqual(flat, [['a', 'b'            ],
                                 [1   , 'hello—goodbye']])
+    
+    def test_tablize_with_labels(self):
+        renderer = CSVRenderer()
+        renderer.labels = {'a':'A', 'b': 'B'}
+
+        flat = renderer.tablize([{'a': 1, 'b': 2},
+                                 {'b': 3, 'c': [4, 5]},
+                                 6])
+        self.assertEqual(flat, [[''  , 'A' , 'B' , 'c.0' , 'c.1'],
+                                [None, 1   , 2   , None  , None ],
+                                [None, None, 3   , 4     , 5    ],
+                                [6   , None, None, None  , None ]])
 
     def test_render_a_list_with_unicode_elements(self):
         renderer = CSVRenderer()
@@ -101,6 +113,16 @@ class TestCSVRenderer (TestCase):
                                '1,\r\n,'
                                '4\r\n')
 
+    def test_dynamic_render_subset_of_fields_with_labels(self):
+        renderer = CSVRenderer()
+
+        data = [{'a': 1, 'b': 2},
+                {'b': 3, 'c': {'x': 4, 'y': 5}}]
+        dump = renderer.render(data, renderer_context={'headers': ['a', 'c.x'], 'labels': {'a':'A'}})
+        self.assertEqual(dump, 'A,c.x\r\n'
+                               '1,\r\n,'
+                               '4\r\n')
+        
     def test_render_data_with_writer_opts(self):
         renderer = CSVRenderer()
         renderer.headers = ['a', 'b']
