@@ -25,7 +25,7 @@ class CSVRenderer(BaseRenderer):
     format = 'csv'
     level_sep = '.'
     header = None
-    labels = None
+    labels = None  # {'<field>':'<label>'}
 
     def render(self, data, media_type=None, renderer_context={}, writer_opts=None):
         """
@@ -33,10 +33,6 @@ class CSVRenderer(BaseRenderer):
         """
         if data is None:
             return ''
-
-        # {'<field>':'<label>'}
-        self.labels = renderer_context.get('labels', self.labels)
-        self.headers = renderer_context.get('headers', self.headers)
 
         if not isinstance(data, list):
             data = [data]
@@ -46,8 +42,9 @@ class CSVRenderer(BaseRenderer):
 
         renderer_context = renderer_context or {}
         header = renderer_context.get('header', self.header)
+        labels = renderer_context.get('labels', self.labels)
 
-        table = self.tablize(data, header=header)
+        table = self.tablize(data, header=header, labels=labels)
         csv_buffer = StringIO()
         csv_writer = csv.writer(csv_buffer, **writer_opts)
         for row in table:
@@ -59,7 +56,7 @@ class CSVRenderer(BaseRenderer):
 
         return csv_buffer.getvalue()
 
-    def tablize(self, data, header=None):
+    def tablize(self, data, header=None, labels=None):
         """
         Convert a list of data into a table.
         """
@@ -89,8 +86,8 @@ class CSVRenderer(BaseRenderer):
                 rows.append(row)
 
             # Return your "table", with the headers as the first row.
-            if self.labels:
-                return [[self.labels.get(x, x) for x in data.header]] + rows
+            if labels:
+                return [[labels.get(x, x) for x in data.header]] + rows
             else:
                 return [data.header] + rows
 
