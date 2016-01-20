@@ -104,7 +104,7 @@ class TestCSVRenderer (TestCase):
 
     def test_render_subset_of_fields(self):
         renderer = CSVRenderer()
-        renderer.headers = ['a', 'c.x']
+        renderer.header = ['a', 'c.x']
 
         data = [{'a': 1, 'b': 2},
                 {'b': 3, 'c': {'x': 4, 'y': 5}}]
@@ -125,7 +125,7 @@ class TestCSVRenderer (TestCase):
 
     def test_render_data_with_writer_opts(self):
         renderer = CSVRenderer()
-        renderer.headers = ['a', 'b']
+        renderer.header = ['a', 'b']
         data = [{'a': 'test', 'b': 'hello'}, {'a': 'foo', 'b': 'bar'}]
         writer_opts = {
             'quoting': csv.QUOTE_ALL,
@@ -141,21 +141,21 @@ class TestCSVRenderer (TestCase):
 class TestCSVStreamingRenderer(TestCase):
 
     def setUp(self):
-        self.headers = ['a', 'b']
+        self.header = ['a', 'b']
         self.data = [{'a': 1, 'b': 2}]
 
     def test_renderer_return_type(self):
         renderer = CSVStreamingRenderer()
-        renderer.headers = self.headers
+        renderer.header = self.header
         dump = renderer.render(self.data)
         self.assertIsInstance(dump, GeneratorType)
 
     def test_renderer_value(self):
         renderer = CSVRenderer()
-        renderer.headers = self.headers
+        renderer.header = self.header
 
         streaming_renderer = CSVStreamingRenderer()
-        streaming_renderer.headers = self.headers
+        streaming_renderer.header = self.header
 
         renderer_data = renderer.render(self.data)
         streaming_renderer_data = ''.join(streaming_renderer.render(self.data))
