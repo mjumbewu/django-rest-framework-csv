@@ -5,6 +5,9 @@ from six import StringIO, text_type
 from rest_framework_csv.orderedrows import OrderedRows
 from rest_framework_csv.misc import Echo
 
+from logging import getLogger
+log = getLogger(__name__)
+
 # six versions 1.3.0 and previous don't have PY2
 try:
     from six import PY2
@@ -21,7 +24,7 @@ class CSVRenderer(BaseRenderer):
     media_type = 'text/csv'
     format = 'csv'
     level_sep = '.'
-    headers = None
+    header = None
 
     def render(self, data, media_type=None, renderer_context=None, writer_opts=None):
         """
@@ -36,7 +39,10 @@ class CSVRenderer(BaseRenderer):
         if writer_opts is None:
             writer_opts = {}
 
-        table = self.tablize(data)
+        renderer_context = renderer_context or {}
+        header = renderer_context.get('header', self.header)
+
+        table = self.tablize(data, header=header)
         csv_buffer = StringIO()
         csv_writer = csv.writer(csv_buffer, **writer_opts)
         for row in table:
@@ -48,7 +54,7 @@ class CSVRenderer(BaseRenderer):
 
         return csv_buffer.getvalue()
 
-    def tablize(self, data):
+    def tablize(self, data, header=None):
         """
         Convert a list of data into a table.
         """
@@ -59,7 +65,7 @@ class CSVRenderer(BaseRenderer):
             # each item designates the name of the column that the item will
             # fall into.
             data = self.flatten_data(data)
-            data.header = data.header or self.headers
+            data.header = header or data.header
 
             # Get the set of all unique headers, and sort them (unless already provided).
             if not data.header:
@@ -141,6 +147,24 @@ class CSVRenderer(BaseRenderer):
             nested_item = self.nest_flat_item(flat_item, key)
             flat_dict.update(nested_item)
         return flat_dict
+
+    def headers():
+        doc = ("The headers property. Kept around for backward compatibility."
+               "Use the header attribute instead.")
+        def fget(self):
+            log.warning('The CSVRenderer.headers property is deprecated. '
+                        'Use CSVRenderer.header instead.')
+            return self.header
+        def fset(self, value):
+            log.warning('The CSVRenderer.headers property is deprecated. '
+                        'Use CSVRenderer.header instead.')
+            self.header = value
+        def fdel(self):
+            log.warning('The CSVRenderer.headers property is deprecated. '
+                        'Use CSVRenderer.header instead.')
+            del self.header
+        return locals()
+    headers = property(**headers())
 
 
 class CSVRendererWithUnderscores (CSVRenderer):

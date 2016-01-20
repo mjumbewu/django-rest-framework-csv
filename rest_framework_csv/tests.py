@@ -81,8 +81,14 @@ class TestCSVRenderer (TestCase):
         csv_file = 'v1,v2,v3\r\na,1,2.3\r\nb,4,5.6\r\n'
         data = parser.parse(StringIO(csv_file))
         renderer = CSVRenderer()
+
         dump = renderer.render(data)
-        self.assertEqual(dump, csv_file) # field order should be maintained
+        self.assertEqual(dump, csv_file)  # field order should be maintained
+
+        dump = renderer.render(data, renderer_context={'header': ['v3', 'v1', 'v2']})
+        self.assertTrue(dump.startswith('v3,v1,v2\r\n'),  # field order should be overrideable
+                        'Failed to override the header. Should be "v3,v1,v2". '
+                        'Was {}'.format(dump.split()[0]))
 
     def test_render_subset_of_fields(self):
         renderer = CSVRenderer()
