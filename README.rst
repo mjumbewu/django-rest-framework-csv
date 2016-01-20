@@ -121,12 +121,12 @@ To run the tests against the current environment:
 Changelog
 =========
 
-1.4.0
------
+1.4.0/1.4.1
+-----------
 
 - Add support for changing field labels in the ``CSVRenderer``, thanks to @soby
-- Add support for setting ``CSVRenderer`` headers and labels as ``renderer_context``
-  parameters.
+- Add support for setting ``CSVRenderer`` headers, labels, and writer_opts as
+  ``renderer_context`` parameters.
 - Renamed ``CSVRenderer.headers`` to ``CSVRenderer.header``; old spelling is
   still available for backwards compatibility, but may be removed in the future.
 
