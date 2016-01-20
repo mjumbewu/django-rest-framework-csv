@@ -137,6 +137,35 @@ class TestCSVRenderer (TestCase):
         self.assertIn("|test|", dump)
         self.assertIn("|hello|", dump)
 
+    def test_render_data_with_writer_opts_set_via_CSVRenderer(self):
+        renderer = CSVRenderer()
+        renderer.headers = ['a', 'b']
+        data = [{'a': 'test', 'b': 'hello'}, {'a': 'foo', 'b': 'bar'}]
+        writer_opts = {
+            'quoting': csv.QUOTE_ALL,
+            'quotechar': '|' if PY3 else b'|',
+            'delimiter': ';' if PY3 else b';',
+        }
+        renderer.writer_opts = writer_opts
+        dump = renderer.render(data)
+        self.assertEquals(dump.count(';'), 3)
+        self.assertIn("|test|", dump)
+        self.assertIn("|hello|", dump)
+
+    def test_render_data_with_writer_opts_set_via_renderer_context(self):
+        renderer = CSVRenderer()
+        renderer.headers = ['a', 'b']
+        data = [{'a': 'test', 'b': 'hello'}, {'a': 'foo', 'b': 'bar'}]
+        writer_opts = {
+            'quoting': csv.QUOTE_ALL,
+            'quotechar': '|' if PY3 else b'|',
+            'delimiter': ';' if PY3 else b';',
+        }
+        dump = renderer.render(data, renderer_context={'writer_opts': writer_opts})
+        self.assertEquals(dump.count(';'), 3)
+        self.assertIn("|test|", dump)
+        self.assertIn("|hello|", dump)
+
 
 class TestCSVStreamingRenderer(TestCase):
 

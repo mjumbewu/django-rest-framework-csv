@@ -26,6 +26,7 @@ class CSVRenderer(BaseRenderer):
     level_sep = '.'
     header = None
     labels = None  # {'<field>':'<label>'}
+    writer_opts = None
 
     def render(self, data, media_type=None, renderer_context={}, writer_opts=None):
         """
@@ -37,8 +38,11 @@ class CSVRenderer(BaseRenderer):
         if not isinstance(data, list):
             data = [data]
 
-        if writer_opts is None:
-            writer_opts = {}
+        if writer_opts is not None:
+            log.warning('The writer_opts argument is deprecated. Pass the '
+                        'writer_opts attribute into renderer_context instead.')
+
+        writer_opts = renderer_context.get('writer_opts', writer_opts or self.writer_opts or {})
 
         renderer_context = renderer_context or {}
         header = renderer_context.get('header', self.header)
