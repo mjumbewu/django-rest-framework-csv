@@ -45,6 +45,46 @@ Alternatively, to set CSV as a default rendered format, add the following to the
         ),
     }
 
+Ordered Fields
+--------------
+
+By default, a ``CSVRenderer`` will output fields in sorted order. To specify
+an alternative field ordering you can override the ``header`` attribute. There
+are two ways to do this:
+
+1) Create a new renderer class and override the ``header`` attribute directly:
+
+    .. code-block:: python
+
+        class MyUserRenderer (CSVRenderer):
+            header = ['first', 'last', 'email']
+
+        @api_view(['GET'])
+        @renderer_classes((MyUserRenderer,))
+        def my_view(request):
+            users = User.objects.filter(active=True)
+            content = [{'first': user.first_name,
+                        'last': user.last_name,
+                        'email': user.email}
+                       for user in users]
+            return Response(content)
+
+2) Use the ``renderer_context`` to override the field ordering on the fly:
+
+    .. code-block:: python
+
+        class MyView (APIView):
+            renderer_classes = [CSVRenderer]
+
+            def get_renderer_context(self):
+                context = super().get_renderer_context()
+                context['header'] = (
+                    self.request.GET['fields'].split(',')
+                    if 'fields' in self.request.GET else None)
+                return context
+
+            ...
+
 Pagination
 ----------
 
@@ -62,7 +102,7 @@ that paginate data
         def render(self, data, *args, **kwargs):
             if not isinstance(data, list):
                 data = data.get(self.results_field, [])
-            return super(PaginatedCSVRenderer, self).render(data, media_type, *args, **kwargs)
+            return super().render(data, media_type, *args, **kwargs)
 
 For more information about using renderers with Django REST Framework, see the
 `API Guide <http://django-rest-framework.org/api-guide/renderers/>`_ or the
