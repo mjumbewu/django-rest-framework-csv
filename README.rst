@@ -59,14 +59,14 @@ that paginate data
     class PaginatedCSVRenderer (CSVRenderer):
         results_field = 'results'
 
-        def render(self, data, media_type=None, renderer_context=None):
+        def render(self, data, *args, **kwargs):
             if not isinstance(data, list):
                 data = data.get(self.results_field, [])
-            return super(PaginatedCSVRenderer, self).render(data, media_type, renderer_context)
+            return super(PaginatedCSVRenderer, self).render(data, media_type, *args, **kwargs)
 
 For more information about using renderers with Django REST Framework, see the
-`API Guide <http://django-rest-framework.org/api-guide/renderers.html>`_ or the
-`Tutorial <http://django-rest-framework.org/tutorial/1-serialization.html>`_.
+`API Guide <http://django-rest-framework.org/api-guide/renderers/>`_ or the
+`Tutorial <http://django-rest-framework.org/tutorial/1-serialization/>`_.
 
 Running the tests
 -----------------
