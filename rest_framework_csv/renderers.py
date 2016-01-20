@@ -23,7 +23,8 @@ class CSVRenderer(BaseRenderer):
     level_sep = '.'
     headers = None
 
-    def render(self, data, media_type=None, renderer_context=None, writer_opts=None):
+    def render(self, data, media_type=None, renderer_context=None,
+               writer_opts=None, order=None):
         """
         Renders serialized *data* into CSV. For a dictionary:
         """
@@ -36,7 +37,7 @@ class CSVRenderer(BaseRenderer):
         if writer_opts is None:
             writer_opts = {}
 
-        table = self.tablize(data)
+        table = self.tablize(data, order=order)
         csv_buffer = StringIO()
         csv_writer = csv.writer(csv_buffer, **writer_opts)
         for row in table:
@@ -48,7 +49,7 @@ class CSVRenderer(BaseRenderer):
 
         return csv_buffer.getvalue()
 
-    def tablize(self, data):
+    def tablize(self, data, order=None):
         """
         Convert a list of data into a table.
         """
@@ -59,8 +60,7 @@ class CSVRenderer(BaseRenderer):
             # each item designates the name of the column that the item will
             # fall into.
             data = self.flatten_data(data)
-            data.header = data.header or self.headers
-
+            data.header = order or data.header or self.headers
             # Get the set of all unique headers, and sort them (unless already provided).
             if not data.header:
                 headers = set()

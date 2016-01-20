@@ -109,6 +109,16 @@ class TestCSVRenderer (TestCase):
         self.assertIn("|test|", dump)
         self.assertIn("|hello|", dump)
 
+    def test_render_with_order(self):
+        renderer = CSVRenderer()
+        data = [{'a': 'test', 'b': 'hello', 'c': 'c', 'd': 'd'}]
+        dump = renderer.render(data, order=['b', 'a', 'c', 'd'])
+        self.assertTrue(dump.startswith('b,a,c,d'))
+        dump = renderer.render(data, order=['a', 'b', 'c', 'd'])
+        self.assertTrue(dump.startswith('a,b,c,d'))
+        dump = renderer.render(data, order=['d', 'c', 'b', 'a'])
+        self.assertTrue(dump.startswith('d,c,b,a'))
+
 
 class TestCSVStreamingRenderer(TestCase):
 
