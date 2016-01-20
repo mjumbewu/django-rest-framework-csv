@@ -25,8 +25,9 @@ class CSVRenderer(BaseRenderer):
     format = 'csv'
     level_sep = '.'
     header = None
+    labels = None  # {'<field>':'<label>'}
 
-    def render(self, data, media_type=None, renderer_context=None, writer_opts=None):
+    def render(self, data, media_type=None, renderer_context={}, writer_opts=None):
         """
         Renders serialized *data* into CSV. For a dictionary:
         """
@@ -41,8 +42,9 @@ class CSVRenderer(BaseRenderer):
 
         renderer_context = renderer_context or {}
         header = renderer_context.get('header', self.header)
+        labels = renderer_context.get('labels', self.labels)
 
-        table = self.tablize(data, header=header)
+        table = self.tablize(data, header=header, labels=labels)
         csv_buffer = StringIO()
         csv_writer = csv.writer(csv_buffer, **writer_opts)
         for row in table:
@@ -54,7 +56,7 @@ class CSVRenderer(BaseRenderer):
 
         return csv_buffer.getvalue()
 
-    def tablize(self, data, header=None):
+    def tablize(self, data, header=None, labels=None):
         """
         Convert a list of data into a table.
         """
@@ -84,7 +86,10 @@ class CSVRenderer(BaseRenderer):
                 rows.append(row)
 
             # Return your "table", with the headers as the first row.
-            return [data.header] + rows
+            if labels:
+                return [[labels.get(x, x) for x in data.header]] + rows
+            else:
+                return [data.header] + rows
 
         else:
             return []
@@ -173,7 +178,7 @@ class CSVRendererWithUnderscores (CSVRenderer):
 
 class CSVStreamingRenderer(CSVRenderer):
 
-    def render(self, data, media_type=None, renderer_context=None):
+    def render(self, data, media_type=None, renderer_context={}):
         """
         Renders serialized *data* into CSV to be used with Django
         StreamingHttpResponse. We need to return a generator here, so Django
@@ -191,6 +196,8 @@ class CSVStreamingRenderer(CSVRenderer):
         """
         if data is None:
             yield ''
+
+        self.labels = renderer_context.get('labels', self.labels)
 
         if not isinstance(data, list):
             data = [data]
