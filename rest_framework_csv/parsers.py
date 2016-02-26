@@ -39,9 +39,8 @@ class CSVParser(BaseParser):
         delimiter = parser_context.get('delimiter', ',')
         encoding = parser_context.get('encoding', settings.DEFAULT_CHARSET)
 
-        # take whatever data we have and convert to byte array (str)
         try:
-            strdata = str(stream.read().encode('utf-8'))
+            strdata = stream.read()
             binary = universal_newlines( strdata)
             rows = unicode_csv_reader(binary, delimiter=delimiter, charset=encoding)
             data = OrderedRows(next(rows))
@@ -51,3 +50,4 @@ class CSVParser(BaseParser):
             return data
         except Exception as exc:
             raise ParseError('CSV parse error - %s' % str(exc))
+
