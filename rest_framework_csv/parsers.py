@@ -40,23 +40,14 @@ class CSVParser(BaseParser):
         encoding = parser_context.get('encoding', settings.DEFAULT_CHARSET)
 
         # take whatever data we have and convert to byte array (str)
-        #print "\n*** stream", stream, type(stream)
-        strdata = str(stream.read().encode('utf-8'))
-        #print "strdata", strdata
-        #binary = io.BytesIO(strdata)
-        binary = universal_newlines( strdata)
-        #print "d ****", dir(binary)
-        rows = unicode_csv_reader(binary, delimiter=delimiter, charset=encoding)
-        #print "rows", rows
-        #rows = next(rows)
-        #print "rows next", rows
-        data = OrderedRows(next(rows))
-        #print "\n*** data", data
-        for row in rows:
-            #print "parsed row", row
-            #print "data.header", data.header
-            row_data = dict(zip(data.header, row))
-            data.append(row_data)
-        return data
-        #except Exception as exc:
-        #    raise ParseError('CSV parse error - %s' % str(exc))
+        try:
+            strdata = str(stream.read().encode('utf-8'))
+            binary = universal_newlines( strdata)
+            rows = unicode_csv_reader(binary, delimiter=delimiter, charset=encoding)
+            data = OrderedRows(next(rows))
+            for row in rows:
+                row_data = dict(zip(data.header, row))
+                data.append(row_data)
+            return data
+        except Exception as exc:
+            raise ParseError('CSV parse error - %s' % str(exc))
