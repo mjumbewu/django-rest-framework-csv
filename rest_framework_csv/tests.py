@@ -75,6 +75,7 @@ class TestCSVRenderer (TestCase):
                                  {'b': 3, 'c': [4, 5]},
                                  6],
                                 labels={'a':'A', 'c.0': '0c'})
+
         self.assertEqual(flat, [[''  , 'A' , 'b' , '0c' , 'c.1'],
                                 [None, 1   , 2   , None  , None ],
                                 [None, None, 3   , 4     , 5    ],
@@ -171,7 +172,8 @@ class TestCSVStreamingRenderer(TestCase):
 
     def setUp(self):
         self.header = ['a', 'b']
-        self.data = [{'a': 1, 'b': 2}]
+        self.data = [{'a': 1, 'b': 2, 'c': 3}]
+        self.labels = {'a': 'Aa'}
 
     def test_renderer_return_type(self):
         renderer = CSVStreamingRenderer()
@@ -182,9 +184,11 @@ class TestCSVStreamingRenderer(TestCase):
     def test_renderer_value(self):
         renderer = CSVRenderer()
         renderer.header = self.header
+        renderer.labels = self.labels
 
         streaming_renderer = CSVStreamingRenderer()
         streaming_renderer.header = self.header
+        streaming_renderer.labels = self.labels
 
         renderer_data = renderer.render(self.data)
         streaming_renderer_data = ''.join(streaming_renderer.render(self.data))

@@ -201,12 +201,13 @@ class CSVStreamingRenderer(CSVRenderer):
         if data is None:
             yield ''
 
-        self.labels = renderer_context.get('labels', self.labels)
-
         if not isinstance(data, list):
             data = [data]
 
-        table = self.tablize(data)
+        header = renderer_context.get('header', self.header)
+        labels = renderer_context.get('labels', self.labels)
+
+        table = self.tablize(data, header=header, labels=labels)
         csv_buffer = Echo()
         csv_writer = csv.writer(csv_buffer)
         for row in table:
