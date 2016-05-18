@@ -111,7 +111,7 @@ For more information about using renderers with Django REST Framework, see the
 Custom Fields Format
 --------------------
 
-You can customize the data format (serialization the field by mapping them to a function). For example:
+You can customize the data serialization (serialization the field by mapping them to a function). For example:
 
 .. code-block:: python
 
