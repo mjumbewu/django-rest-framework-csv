@@ -165,6 +165,14 @@ class TestCSVRenderer (TestCase):
         self.assertEquals(dump.count(';'), 3)
         self.assertIn("|test|", dump)
         self.assertIn("|hello|", dump)
+        
+    def test_render_data_with_custom_data_serializer(self):
+        renderer = CSVRenderer()
+        data_serializer_map = {'a' : (lambda param: str(param) + ' hour')}
+
+        flat = renderer.tablize([{'a': 1}], None, None, data_serializer_map)
+        self.assertEqual(flat, [['a'],
+                                ['1 hour']])
 
 
 class TestCSVStreamingRenderer(TestCase):

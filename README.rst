@@ -108,6 +108,17 @@ For more information about using renderers with Django REST Framework, see the
 `API Guide <http://django-rest-framework.org/api-guide/renderers/>`_ or the
 `Tutorial <http://django-rest-framework.org/tutorial/1-serialization/>`_.
 
+Custom Fields Format
+--------------------
+
+You can customize the data format (serialization the field by mapping them to a function). For example:
+
+.. code-block:: python
+
+    class MyUserRenderer (CSVRenderer):
+        data_serializer_map = {'time': (lambda param: time + ' hour(s)')}
+
+
 Running the tests
 -----------------
 

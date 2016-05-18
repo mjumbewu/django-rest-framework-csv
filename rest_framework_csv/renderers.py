@@ -26,6 +26,7 @@ class CSVRenderer(BaseRenderer):
     level_sep = '.'
     header = None
     labels = None  # {'<field>':'<label>'}
+    data_serializer_map = {} # {'field':(lambda param: param + 'hours')}
     writer_opts = None
 
     def render(self, data, media_type=None, renderer_context={}, writer_opts=None):
@@ -48,7 +49,7 @@ class CSVRenderer(BaseRenderer):
         header = renderer_context.get('header', self.header)
         labels = renderer_context.get('labels', self.labels)
 
-        table = self.tablize(data, header=header, labels=labels)
+        table = self.tablize(data, header=header, labels=labels, data_serializer_map=self.data_serializer_map)
         csv_buffer = StringIO()
         csv_writer = csv.writer(csv_buffer, **writer_opts)
         for row in table:
@@ -60,7 +61,7 @@ class CSVRenderer(BaseRenderer):
 
         return csv_buffer.getvalue()
 
-    def tablize(self, data, header=None, labels=None):
+    def tablize(self, data, header=None, labels=None, data_serializer_map={}):
         """
         Convert a list of data into a table.
         """
@@ -86,7 +87,10 @@ class CSVRenderer(BaseRenderer):
             for item in data:
                 row = []
                 for key in data.header:
-                    row.append(item.get(key, None))
+                    if key in data_serializer_map:
+                        row.append(data_serializer_map[key](item.get(key, None)))
+                    else:
+                        row.append(item.get(key, None))
                 rows.append(row)
 
             # Return your "table", with the headers as the first row.
