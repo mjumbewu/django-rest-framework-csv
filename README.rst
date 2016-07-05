@@ -85,6 +85,24 @@ are two ways to do this:
 
             ...
 
+Labeled Fields
+--------------
+
+Custom labels can be applied to the ``CSVRenderer`` using the ``labels`` dict
+attribute where each key corresponds to the header and the value corresponds
+to the custom label for that header.
+
+1) Create a new renderer class and override the ``header`` and ``labels``
+attribute directly:
+
+    .. code-block:: python
+
+        class MyBazRenderer (CSVRenderer):
+            header = ['foo.bar']
+            labels = {
+                'foo.bar': 'baz'
+            }
+
 Pagination
 ----------
 
