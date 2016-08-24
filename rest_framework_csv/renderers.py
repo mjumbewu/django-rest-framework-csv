@@ -71,7 +71,7 @@ class CSVRenderer(BaseRenderer):
             # each item designates the name of the column that the item will
             # fall into.
             data = self.flatten_data(data)
-            data.header = self.header or data.header
+            data.header = header or data.header
 
             # Get the set of all unique headers, and sort them (unless already provided).
             if not data.header:
@@ -206,7 +206,7 @@ class CSVStreamingRenderer(CSVRenderer):
         if not isinstance(data, list):
             data = [data]
 
-        table = self.tablize(data)
+        table = self.tablize(data, header)
         csv_buffer = Echo()
         csv_writer = csv.writer(csv_buffer)
         for row in table:
