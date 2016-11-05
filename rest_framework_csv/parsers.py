@@ -14,7 +14,8 @@ def preprocess_stream(stream, charset):
         # csv.py doesn't do Unicode; encode temporarily:
         return (chunk.encode(charset) for chunk in stream)
     else:
-        return stream
+        return (chunk.decode(charset) for chunk in stream)
+
 
 def postprocess_row(row, charset):
     if six.PY2:
@@ -23,11 +24,13 @@ def postprocess_row(row, charset):
     else:
         return row
 
+
 def unicode_csv_reader(csv_data, dialect=csv.excel, charset='utf-8', **kwargs):
     csv_data = preprocess_stream(csv_data, charset)
     csv_reader = csv.reader(csv_data, dialect=dialect, **kwargs)
     for row in csv_reader:
         yield postprocess_row(row, charset)
+
 
 def universal_newlines(stream):
     for intermediate_line in stream:
