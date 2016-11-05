@@ -189,7 +189,7 @@ class CSVStreamingRenderer(CSVRenderer):
         can iterate over it, rendering and returning each line.
 
         >>> renderer = CSVStreamingRenderer()
-        >>> renderer.headers = ['a', 'b']
+        >>> renderer.header = ['a', 'b']
         >>> data = [{'a': 1, 'b': 2}]
         >>> from django.http import StreamingHttpResponse
         >>> response = StreamingHttpResponse(renderer.render(data),
@@ -206,7 +206,7 @@ class CSVStreamingRenderer(CSVRenderer):
         if not isinstance(data, list):
             data = [data]
 
-        table = self.tablize(data)
+        table = self.tablize(data, header)
         csv_buffer = Echo()
         csv_writer = csv.writer(csv_buffer)
         for row in table:
