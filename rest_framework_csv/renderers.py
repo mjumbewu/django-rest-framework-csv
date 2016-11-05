@@ -67,14 +67,14 @@ class CSVRenderer(BaseRenderer):
         provide a header to the renderer (using the `header` attribute, or via
         the `renderer_context`).
         """
-        if data:
+        data_header = data.header if hasattr(data, 'header') else header
 
+        if data:
             # First, flatten the data (i.e., convert it to a list of
             # dictionaries that are each exactly one level deep).  The key for
             # each item designates the name of the column that the item will
             # fall into.
             data = self.flatten_data(data)
-            data_header = data.header if hasattr(data, 'header') else header
 
             # Get the set of all unique headers, and sort them (unless already provided).
             if not data_header:
@@ -98,8 +98,12 @@ class CSVRenderer(BaseRenderer):
                 row = [item.get(key, None) for key in data_header]
                 yield row
 
+        elif data_header:
+            # If there's no data but a header was supplied, yield the header.
+            yield data_header
+
         else:
-            # Generator will yield nothing if there's no data
+            # Generator will yield nothing if there's no data and no header
             pass
 
     def flatten_data(self, data):
