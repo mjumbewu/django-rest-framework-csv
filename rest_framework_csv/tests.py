@@ -123,20 +123,6 @@ class TestCSVRenderer (TestCase):
                                '1,\r\n,'
                                '4\r\n')
 
-    def test_render_data_with_writer_opts(self):
-        renderer = CSVRenderer()
-        renderer.header = ['a', 'b']
-        data = [{'a': 'test', 'b': 'hello'}, {'a': 'foo', 'b': 'bar'}]
-        writer_opts = {
-            'quoting': csv.QUOTE_ALL,
-            'quotechar': '|' if PY3 else b'|',
-            'delimiter': ';' if PY3 else b';',
-        }
-        dump = renderer.render(data, writer_opts=writer_opts)
-        self.assertEquals(dump.count(';'), 3)
-        self.assertIn("|test|", dump)
-        self.assertIn("|hello|", dump)
-
     def test_render_data_with_writer_opts_set_via_CSVRenderer(self):
         renderer = CSVRenderer()
         renderer.header = ['a', 'b']
