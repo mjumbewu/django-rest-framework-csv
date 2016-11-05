@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 import unicodecsv as csv
+from django.conf import settings
 from rest_framework.renderers import *
 from six import BytesIO, text_type
 from rest_framework_csv.orderedrows import OrderedRows
