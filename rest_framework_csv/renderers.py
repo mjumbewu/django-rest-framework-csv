@@ -39,8 +39,9 @@ class CSVRenderer(BaseRenderer):
             data = [data]
 
         if writer_opts is not None:
-            log.warning('The writer_opts argument is deprecated. Pass the '
-                        'writer_opts attribute into renderer_context instead.')
+            log.warning('The writer_opts argument is deprecated. Set the '
+                        'writer_opts on the renderer class, instance, or pass '
+                        'writer_opts into the renderer_context instead.')
 
         writer_opts = renderer_context.get('writer_opts', writer_opts or self.writer_opts or {})
 
