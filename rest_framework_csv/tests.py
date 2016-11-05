@@ -139,7 +139,7 @@ class TestCSVRenderer (TestCase):
 
     def test_render_data_with_writer_opts_set_via_CSVRenderer(self):
         renderer = CSVRenderer()
-        renderer.headers = ['a', 'b']
+        renderer.header = ['a', 'b']
         data = [{'a': 'test', 'b': 'hello'}, {'a': 'foo', 'b': 'bar'}]
         writer_opts = {
             'quoting': csv.QUOTE_ALL,
@@ -154,7 +154,7 @@ class TestCSVRenderer (TestCase):
 
     def test_render_data_with_writer_opts_set_via_renderer_context(self):
         renderer = CSVRenderer()
-        renderer.headers = ['a', 'b']
+        renderer.header = ['a', 'b']
         data = [{'a': 'test', 'b': 'hello'}, {'a': 'foo', 'b': 'bar'}]
         writer_opts = {
             'quoting': csv.QUOTE_ALL,
