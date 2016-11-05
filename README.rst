@@ -139,6 +139,19 @@ To run the tests against the current environment:
 Changelog
 =========
 
+2.0.0
+-----
+
+- Make `CSVRenderer.render` return bytes, and `CSVParser.parse` expect a byte
+  stream.
+- Have data-less renders print header row, if header is explicitly supplied
+- Drop Django 1.7 tests and add Django 1.10 tests
+- have `CSVRenderer.tableize` act as a generator when possible (i.e., when a
+  header is explicitly specified).
+- Add docs for labels thanks to @radyz
+- Fix header rendering in `CSVStreamingRenderer` thanks to @radialnash
+- Improve unicode handling, thanks to @brandonrobertz
+
 1.4.0/1.4.1
 -----------
 
