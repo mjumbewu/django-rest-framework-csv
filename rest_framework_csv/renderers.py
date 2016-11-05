@@ -62,6 +62,13 @@ class CSVRenderer(BaseRenderer):
     def tablize(self, data, header=None, labels=None):
         """
         Convert a list of data into a table.
+
+        If there is a header provided to tablize it will efficiently yield each
+        row as needed. If no header is provided, tablize will need to process
+        each row in the data in order to construct a complete header. Thus, if
+        you have a lot of data and want to stream it, you should probably
+        provide a header to the renderer (using the `header` attribute, or via
+        the `renderer_context`).
         """
         if data:
 
@@ -70,32 +77,33 @@ class CSVRenderer(BaseRenderer):
             # each item designates the name of the column that the item will
             # fall into.
             data = self.flatten_data(data)
-            data.header = header or data.header
+            data_header = data.header if hasattr(data, 'header') else header
 
             # Get the set of all unique headers, and sort them (unless already provided).
-            if not data.header:
+            if not data_header:
+                # We don't have to materialize the data generator unless we
+                # have to build a header.
+                data = tuple(data)
                 headers = set()
                 for item in data:
                     headers.update(list(item.keys()))
-                data.header = sorted(headers)
-
-            # Create a row for each dictionary, filling in columns for which the
-            # item has no data with None values.
-            rows = []
-            for item in data:
-                row = []
-                for key in data.header:
-                    row.append(item.get(key, None))
-                rows.append(row)
+                data_header = sorted(headers)
 
             # Return your "table", with the headers as the first row.
             if labels:
-                return [[labels.get(x, x) for x in data.header]] + rows
+                yield [labels.get(x, x) for x in data_header]
             else:
-                return [data.header] + rows
+                yield data_header
+
+            # Create a row for each dictionary, filling in columns for which the
+            # item has no data with None values.
+            for item in data:
+                row = [item.get(key, None) for key in data_header]
+                yield row
 
         else:
-            return []
+            # Generator will yield nothing if there's no data
+            pass
 
     def flatten_data(self, data):
         """
@@ -103,12 +111,9 @@ class CSVRenderer(BaseRenderer):
         each exactly one level deep. The key for each value in the dictionaries
         designates the name of the column that the value will fall into.
         """
-        flat_data = OrderedRows(data.header if hasattr(data, 'header') else None)
         for item in data:
             flat_item = self.flatten_item(item)
-            flat_data.append(flat_item)
-
-        return flat_data
+            yield flat_item
 
     def flatten_item(self, item):
         if isinstance(item, list):

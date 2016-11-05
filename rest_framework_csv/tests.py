@@ -18,12 +18,14 @@ class TestCSVRenderer (TestCase):
         renderer = CSVRenderer()
 
         flat = renderer.tablize([])
+        flat = list(flat)
         self.assertEqual(flat, [])
 
     def test_tablize_a_list_with_atomic_elements(self):
         renderer = CSVRenderer()
 
         flat = renderer.tablize([1, 2, 'hello'])
+        flat = list(flat)
         self.assertEqual(flat, [[''     ],
                                 [1      ],
                                 [2      ],
@@ -36,6 +38,7 @@ class TestCSVRenderer (TestCase):
         flat = renderer.tablize([[1, 2, 3],
                                  [4, 5],
                                  [6, 7, [8, 9]]])
+        flat = list(flat)
         self.assertEqual(flat, [['0' , '1' , '2'  , '2.0' , '2.1'],
                                 [1   , 2   , 3    , None  , None ],
                                 [4   , 5   , None , None  , None ],
@@ -46,6 +49,7 @@ class TestCSVRenderer (TestCase):
 
         flat = renderer.tablize([{'a': 1, 'b': 2},
                                  {'b': 3, 'c': {'x': 4, 'y': 5}}])
+        flat = list(flat)
         self.assertEqual(flat, [['a' , 'b' , 'c.x' , 'c.y' ],
                                 [1   , 2   , None  , None  ],
                                 [None, 3   , 4     , 5     ]])
@@ -56,6 +60,7 @@ class TestCSVRenderer (TestCase):
         flat = renderer.tablize([{'a': 1, 'b': 2},
                                  {'b': 3, 'c': [4, 5]},
                                  6])
+        flat = list(flat)
         self.assertEqual(flat, [[''  , 'a' , 'b' , 'c.0' , 'c.1'],
                                 [None, 1   , 2   , None  , None ],
                                 [None, None, 3   , 4     , 5    ],
@@ -65,6 +70,7 @@ class TestCSVRenderer (TestCase):
         renderer = CSVRenderer()
 
         flat = renderer.tablize([{'a': 1, 'b': 'hello\u2014goodbye'}])
+        flat = list(flat)
         self.assertEqual(flat, [['a', 'b'            ],
                                 [1   , 'hello—goodbye']])
 
@@ -75,6 +81,7 @@ class TestCSVRenderer (TestCase):
                                  {'b': 3, 'c': [4, 5]},
                                  6],
                                 labels={'a':'A', 'c.0': '0c'})
+        flat = list(flat)
         self.assertEqual(flat, [[''  , 'A' , 'b' , '0c' , 'c.1'],
                                 [None, 1   , 2   , None  , None ],
                                 [None, None, 3   , 4     , 5    ],
