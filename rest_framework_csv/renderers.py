@@ -67,7 +67,10 @@ class CSVRenderer(BaseRenderer):
         provide a header to the renderer (using the `header` attribute, or via
         the `renderer_context`).
         """
-        header = data.header if hasattr(data, 'header') else header
+        # Try to pull the header off of the data, if it's not passed in as an
+        # argument.
+        if not header and hasattr(data, 'header'):
+            header = data.header
 
         if data:
             # First, flatten the data (i.e., convert it to a list of
@@ -81,10 +84,10 @@ class CSVRenderer(BaseRenderer):
                 # We don't have to materialize the data generator unless we
                 # have to build a header.
                 data = tuple(data)
-                headers = set()
+                header_fields = set()
                 for item in data:
-                    headers.update(list(item.keys()))
-                header = sorted(headers)
+                    header_fields.update(list(item.keys()))
+                header = sorted(header_fields)
 
             # Return your "table", with the headers as the first row.
             if labels:
