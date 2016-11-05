@@ -67,7 +67,7 @@ class CSVRenderer(BaseRenderer):
         provide a header to the renderer (using the `header` attribute, or via
         the `renderer_context`).
         """
-        data_header = data.header if hasattr(data, 'header') else header
+        header = data.header if hasattr(data, 'header') else header
 
         if data:
             # First, flatten the data (i.e., convert it to a list of
@@ -77,30 +77,30 @@ class CSVRenderer(BaseRenderer):
             data = self.flatten_data(data)
 
             # Get the set of all unique headers, and sort them (unless already provided).
-            if not data_header:
+            if not header:
                 # We don't have to materialize the data generator unless we
                 # have to build a header.
                 data = tuple(data)
                 headers = set()
                 for item in data:
                     headers.update(list(item.keys()))
-                data_header = sorted(headers)
+                header = sorted(headers)
 
             # Return your "table", with the headers as the first row.
             if labels:
-                yield [labels.get(x, x) for x in data_header]
+                yield [labels.get(x, x) for x in header]
             else:
-                yield data_header
+                yield header
 
             # Create a row for each dictionary, filling in columns for which the
             # item has no data with None values.
             for item in data:
-                row = [item.get(key, None) for key in data_header]
+                row = [item.get(key, None) for key in header]
                 yield row
 
-        elif data_header:
+        elif header:
             # If there's no data but a header was supplied, yield the header.
-            yield data_header
+            yield header
 
         else:
             # Generator will yield nothing if there's no data and no header
