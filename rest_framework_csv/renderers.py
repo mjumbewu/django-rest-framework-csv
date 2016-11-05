@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
-import csv
+import unicodecsv as csv
 from rest_framework.renderers import *
-from six import StringIO, text_type
+from six import BytesIO, text_type
 from rest_framework_csv.orderedrows import OrderedRows
 from rest_framework_csv.misc import Echo
 
@@ -46,16 +46,13 @@ class CSVRenderer(BaseRenderer):
         writer_opts = renderer_context.get('writer_opts', writer_opts or self.writer_opts or {})
         header = renderer_context.get('header', self.header)
         labels = renderer_context.get('labels', self.labels)
+        encoding = renderer_context.get('encoding', settings.DEFAULT_CHARSET)
 
         table = self.tablize(data, header=header, labels=labels)
-        csv_buffer = StringIO()
-        csv_writer = csv.writer(csv_buffer, **writer_opts)
+        csv_buffer = BytesIO()
+        csv_writer = csv.writer(csv_buffer, encoding=encoding, **writer_opts)
         for row in table:
-            # Assume that strings should be encoded as UTF-8
-            csv_writer.writerow([
-                elem.encode('utf-8') if isinstance(elem, text_type) and PY2 else elem
-                for elem in row
-            ])
+            csv_writer.writerow(row)
 
         return csv_buffer.getvalue()
 
@@ -213,13 +210,10 @@ class CSVStreamingRenderer(CSVRenderer):
         writer_opts = renderer_context.get('writer_opts', self.writer_opts or {})
         header = renderer_context.get('header', self.header)
         labels = renderer_context.get('labels', self.labels)
+        encoding = renderer_context.get('encoding', settings.DEFAULT_CHARSET)
 
         table = self.tablize(data, header=header, labels=labels)
         csv_buffer = Echo()
-        csv_writer = csv.writer(csv_buffer, **writer_opts)
+        csv_writer = csv.writer(csv_buffer, encoding=encoding, **writer_opts)
         for row in table:
-            # Assume that strings should be encoded as UTF-8
-            yield csv_writer.writerow([
-                elem.encode('utf-8') if isinstance(elem, text_type) and PY2 else elem
-                for elem in row
-            ])
+            yield csv_writer.writerow(row)

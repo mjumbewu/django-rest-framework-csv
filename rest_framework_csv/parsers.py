@@ -41,7 +41,7 @@ class CSVParser(BaseParser):
 
         try:
             strdata = stream.read()
-            binary = universal_newlines( strdata)
+            binary = universal_newlines(strdata)
             rows = unicode_csv_reader(binary, delimiter=delimiter, charset=encoding)
             data = OrderedRows(next(rows))
             for row in rows:
