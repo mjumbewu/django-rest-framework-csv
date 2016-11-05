@@ -44,8 +44,6 @@ class CSVRenderer(BaseRenderer):
                         'writer_opts into the renderer_context instead.')
 
         writer_opts = renderer_context.get('writer_opts', writer_opts or self.writer_opts or {})
-
-        renderer_context = renderer_context or {}
         header = renderer_context.get('header', self.header)
         labels = renderer_context.get('labels', self.labels)
 
@@ -207,9 +205,13 @@ class CSVStreamingRenderer(CSVRenderer):
         if not isinstance(data, list):
             data = [data]
 
-        table = self.tablize(data, header)
+        writer_opts = renderer_context.get('writer_opts', self.writer_opts or {})
+        header = renderer_context.get('header', self.header)
+        labels = renderer_context.get('labels', self.labels)
+
+        table = self.tablize(data, header=header, labels=labels)
         csv_buffer = Echo()
-        csv_writer = csv.writer(csv_buffer)
+        csv_writer = csv.writer(csv_buffer, **writer_opts)
         for row in table:
             # Assume that strings should be encoded as UTF-8
             yield csv_writer.writerow([
