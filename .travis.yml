@@ -1,15 +1,13 @@
 language: python
 env:
-  - TOXENV=py27-django17-drf2
-  - TOXENV=py33-django17-drf2
-  - TOXENV=py27-django17-drf3
-  - TOXENV=py33-django17-drf3
   - TOXENV=py27-django18-drf2
   - TOXENV=py33-django18-drf2
   - TOXENV=py27-django18-drf3
   - TOXENV=py33-django18-drf3
   - TOXENV=py27-django19-drf3
   - TOXENV=py34-django19-drf3
+  - TOXENV=py27-django110-drf3
+  - TOXENV=py34-django110-drf3
 
 install:
   - pip install tox
