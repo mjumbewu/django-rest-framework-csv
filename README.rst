@@ -4,7 +4,7 @@ djangorestframework-csv
 
 |build status|_
 
-.. |build status| image:: https://secure.travis-ci.org/mjumbewu/django-rest-framework-csv.png
+.. |build status| image:: https://secure.travis-ci.org/mjumbewu/django-rest-framework-csv.png?branch=master
 .. _build status: https://travis-ci.org/mjumbewu/django-rest-framework-csv
 
 **CSV Tools for Django REST Framework**
