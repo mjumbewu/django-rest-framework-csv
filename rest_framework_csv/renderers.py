@@ -104,7 +104,10 @@ class CSVRenderer(BaseRenderer):
 
         elif header:
             # If there's no data but a header was supplied, yield the header.
-            yield header
+            if labels:
+                yield [labels.get(x, x) for x in header]
+            else:
+                yield header
 
         else:
             # Generator will yield nothing if there's no data and no header
