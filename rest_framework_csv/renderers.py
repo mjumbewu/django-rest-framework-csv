@@ -228,3 +228,15 @@ class CSVStreamingRenderer(CSVRenderer):
         csv_writer = csv.writer(csv_buffer, encoding=encoding, **writer_opts)
         for row in table:
             yield csv_writer.writerow(row)
+
+
+class PaginatedCSVRenderer (CSVRenderer):
+    """
+    Paginated renderer (when pagination is turned on for DRF)
+    """
+    results_field = 'results'
+
+    def render(self, data, *args, **kwargs):
+        if not isinstance(data, list):
+            data = data.get(self.results_field, [])
+        return super(PaginatedCSVRenderer, self).render(data, *args, **kwargs)

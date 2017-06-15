@@ -7,7 +7,7 @@ from types import GeneratorType
 
 from django.test import TestCase
 
-from .renderers import CSVRenderer, CSVStreamingRenderer
+from .renderers import CSVRenderer, CSVStreamingRenderer, PaginatedCSVRenderer
 from .parsers import CSVParser
 
 
@@ -180,6 +180,22 @@ class TestCSVStreamingRenderer(TestCase):
         renderer_data = renderer.render(self.data)
         streaming_renderer_data = b''.join(streaming_renderer.render(self.data))
         self.assertEqual(renderer_data, streaming_renderer_data)
+
+
+class TestPaginatedCSVRenderer(TestCase):
+
+    def setUp(self):
+        self.header = ['a', 'b']
+        self.data = [{'results': {'a': 1, 'b': 2}}]
+
+    def test_renderer_value(self):
+        renderer = PaginatedCSVRenderer()
+        renderer.header = ['a', 'b']
+
+        data = {'results': [{'a': 1, 'b': 2}]}
+        dump = renderer.render(data)
+        self.assertEqual(dump, b'a,b\r\n'
+                               b'1,2\r\n')
 
 
 class TestCSVParser(TestCase):
