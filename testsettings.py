@@ -6,6 +6,7 @@ DATABASES = {
 }
 
 INSTALLED_APPS = (
+    'django.contrib.contenttypes',
     'rest_framework_csv',
 )
 
