@@ -5,6 +5,7 @@ from rest_framework.renderers import *
 from six import BytesIO, text_type
 from rest_framework_csv.orderedrows import OrderedRows
 from rest_framework_csv.misc import Echo
+from types import GeneratorType
 
 from logging import getLogger
 log = getLogger(__name__)
@@ -215,7 +216,7 @@ class CSVStreamingRenderer(CSVRenderer):
 
         self.labels = renderer_context.get('labels', self.labels)
 
-        if not isinstance(data, list):
+        if not isinstance(data, GeneratorType) and not isinstance(data, list):
             data = [data]
 
         writer_opts = renderer_context.get('writer_opts', self.writer_opts or {})
