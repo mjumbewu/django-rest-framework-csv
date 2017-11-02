@@ -181,6 +181,18 @@ class TestCSVStreamingRenderer(TestCase):
         streaming_renderer_data = b''.join(streaming_renderer.render(self.data))
         self.assertEqual(renderer_data, streaming_renderer_data)
 
+    def test_renderer_generator_data(self):
+        renderer = CSVStreamingRenderer()
+        renderer.header = self.header
+        def _generator():
+            for data_item in self.data:
+                yield data_item
+        renderer_generator_dump = renderer.render(_generator())
+        renderer_list_dump = renderer.render(self.data)
+        self.assertIsInstance(renderer_generator_dump, GeneratorType)
+        self.assertIsInstance(renderer_list_dump, GeneratorType)
+        self.assertEquals(list(renderer_generator_dump), list(renderer_list_dump))
+
 
 class TestCSVParser(TestCase):
 
