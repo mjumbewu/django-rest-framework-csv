@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+import codecs
 import unicodecsv as csv
 from django.conf import settings
 from rest_framework.renderers import *
@@ -7,6 +8,7 @@ from rest_framework_csv.orderedrows import OrderedRows
 from rest_framework_csv.misc import Echo
 
 from logging import getLogger
+
 log = getLogger(__name__)
 
 # six versions 1.3.0 and previous don't have PY2
@@ -14,6 +16,7 @@ try:
     from six import PY2
 except ImportError:
     import sys
+
     PY2 = sys.version_info[0] == 2
 
 
@@ -172,28 +175,32 @@ class CSVRenderer(BaseRenderer):
     def headers():
         doc = ("The headers property. Kept around for backward compatibility."
                "Use the header attribute instead.")
+
         def fget(self):
             log.warning('The CSVRenderer.headers property is deprecated. '
                         'Use CSVRenderer.header instead.')
             return self.header
+
         def fset(self, value):
             log.warning('The CSVRenderer.headers property is deprecated. '
                         'Use CSVRenderer.header instead.')
             self.header = value
+
         def fdel(self):
             log.warning('The CSVRenderer.headers property is deprecated. '
                         'Use CSVRenderer.header instead.')
             del self.header
+
         return locals()
+
     headers = property(**headers())
 
 
-class CSVRendererWithUnderscores (CSVRenderer):
+class CSVRendererWithUnderscores(CSVRenderer):
     level_sep = '_'
 
 
 class CSVStreamingRenderer(CSVRenderer):
-
     def render(self, data, media_type=None, renderer_context={}):
         """
         Renders serialized *data* into CSV to be used with Django
@@ -222,6 +229,10 @@ class CSVStreamingRenderer(CSVRenderer):
         header = renderer_context.get('header', self.header)
         labels = renderer_context.get('labels', self.labels)
         encoding = renderer_context.get('encoding', settings.DEFAULT_CHARSET)
+        bom = renderer_context.get('bom', False)
+
+        if bom and encoding == settings.DEFAULT_CHARSET:
+            yield codecs.BOM_UTF8
 
         table = self.tablize(data, header=header, labels=labels)
         csv_buffer = Echo()
