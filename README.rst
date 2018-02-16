@@ -30,7 +30,7 @@ Usage
     from rest_framework_csv import renderers as r
 
     class MyView (APIView):
-        renderer_classes = (r.CSVRenderer, ) + api_settings.DEFAULT_RENDERER_CLASSES
+        renderer_classes = (r.CSVRenderer, ) + tuple(api_settings.DEFAULT_RENDERER_CLASSES)
         ...
 
 Alternatively, to set CSV as a default rendered format, add the following to the
