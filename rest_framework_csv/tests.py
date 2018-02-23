@@ -257,3 +257,10 @@ class TestCSVParser(TestCase):
 
         data = parser.parse(BytesIO(csv_file))
         self.assertEqual(data, [{'col1': 'hello—goodbye', 'col2': 'here—there'}])
+
+    def test_shift_jis_parsing(self):
+        parser = CSVParser()
+        csv_file = 'col1,col2\r\nシフトジス,シフトジス2'.encode('shift-jis')
+
+        data = parser.parse(BytesIO(csv_file), parser_context={'encoding': 'SHIFT_JIS'})
+        self.assertEqual(data, [{'col1': 'シフトジス', 'col2': 'シフトジス2'}])
