@@ -139,6 +139,15 @@ To run the tests against the current environment:
 Changelog
 =========
 
+2.1.0
+-----
+
+- CSVs with no data still output header labels (thanks @travisbloom)
+- Include a paginated renderer as part of the app (thanks @masterfloda)
+- Generators can be used as data sources for CSVStreamingRenderer (thanks
+  @jrzerr)
+- Support for non UTF-8 encoding parsing (thanks @weasellin)
+
 2.0.0
 -----
 
