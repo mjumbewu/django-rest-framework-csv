@@ -11,7 +11,7 @@ from rest_framework_csv.orderedrows import OrderedRows
 
 
 def unicode_csv_reader(csv_data, dialect=csv.excel, charset='utf-8', **kwargs):
-    csv_reader = csv.reader(csv_data, dialect=dialect, **kwargs)
+    csv_reader = csv.reader(csv_data, dialect=dialect, encoding=charset, **kwargs)
     for row in csv_reader:
         yield row
 
