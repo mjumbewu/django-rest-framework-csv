@@ -106,21 +106,10 @@ attribute directly:
 Pagination
 ----------
 
-Using the renderer with paginated data is also possible, with a little extension.
-A paginated CSV renderer is constructed like below, and should be used with views
-that paginate data
+Using the renderer with paginated data is also possible with the
+new `PaginatedCSVRenderer` class and should be used with views that
+paginate data
 
-.. code-block:: python
-
-    from rest_framework_csv.renderers import CSVRenderer
-
-    class PaginatedCSVRenderer (CSVRenderer):
-        results_field = 'results'
-
-        def render(self, data, *args, **kwargs):
-            if not isinstance(data, list):
-                data = data.get(self.results_field, [])
-            return super(PaginatedCSVRenderer, self).render(data, *args, **kwargs)
 
 For more information about using renderers with Django REST Framework, see the
 `API Guide <http://django-rest-framework.org/api-guide/renderers/>`_ or the
