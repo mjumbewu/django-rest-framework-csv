@@ -1,5 +1,5 @@
 import unicodecsv as csv
-#import csv
+# import csv
 import codecs
 import io
 import six
@@ -15,6 +15,7 @@ def unicode_csv_reader(csv_data, dialect=csv.excel, charset='utf-8', **kwargs):
     for row in csv_reader:
         yield row
 
+
 def universal_newlines(stream):
     # It's possible that the stream was not opened in universal
     # newline mode. If not, we may have a single "row" that has a
@@ -25,6 +26,7 @@ def universal_newlines(stream):
     for line in stream.splitlines():
         yield line
 
+
 class CSVParser(BaseParser):
     """
     Parses CSV serialized data.
@@ -33,6 +35,24 @@ class CSVParser(BaseParser):
     """
 
     media_type = 'text/csv'
+    header = None
+    labels = None
+
+    def parse_row(self, row):
+        """
+        Parses row with replacing actual column name with labeled field name which set in labels attribute.
+        """
+
+        if self.labels:
+            parsed_row = {}
+            for index, header in enumerate(self.header):
+                field = self.labels.get(header)
+                if field:
+                    parsed_row[field] = row[index]
+
+            return parsed_row
+
+        return dict(zip(self.header, row))
 
     def parse(self, stream, media_type=None, parser_context=None):
         parser_context = parser_context or {}
@@ -43,11 +63,11 @@ class CSVParser(BaseParser):
             strdata = stream.read()
             binary = universal_newlines(strdata)
             rows = unicode_csv_reader(binary, delimiter=delimiter, charset=encoding)
-            data = OrderedRows(next(rows))
+            self.header = OrderedRows(next(rows)).header
+            data = []
             for row in rows:
-                row_data = dict(zip(data.header, row))
+                row_data = self.parse_row(row)
                 data.append(row_data)
             return data
         except Exception as exc:
             raise ParseError('CSV parse error - %s' % str(exc))
-

@@ -264,3 +264,16 @@ class TestCSVParser(TestCase):
 
         data = parser.parse(BytesIO(csv_file), parser_context={'encoding': 'SHIFT_JIS'})
         self.assertEqual(data, [{'col1': 'シフトジス', 'col2': 'シフトジス2'}])
+
+    def test_labels(self):
+        parser = CSVParser()
+        labels = {
+            'Name': 'name',
+            'Surname': 'surname',
+        }
+        setattr(parser, 'labels', labels)
+        csv_file = 'Name,Surname\r\nvasya,pupkin'.encode('utf-8')
+        data = parser.parse(BytesIO(csv_file), parser_context={'encoding': 'utf-8'})
+        self.assertEqual(data, [{'name': 'vasya', 'surname': 'pupkin'}])
+
+
