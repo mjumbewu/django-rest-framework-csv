@@ -29,7 +29,9 @@ class CSVParser(BaseParser):
     """
     Parses CSV serialized data.
 
-    The parser assumes the first line contains the column names.
+    The parser uses the column names defined in the csv_header 
+    viewset class property if defined. Otherwise, the parser uses 
+    the first row of the CSV data.
     """
 
     media_type = 'text/csv'
