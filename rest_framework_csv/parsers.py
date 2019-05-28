@@ -41,7 +41,7 @@ class CSVParser(BaseParser):
 
         header = None
         if 'view' in parser_context:
-            if hasattr(parser_context['view'].__class__, 'csv_header'):
+            if hasattr(parser_context['view'], 'csv_header'):
                 header = parser_context['view'].__class__.csv_header
 
         try:
