@@ -43,16 +43,13 @@ class CSVParser(BaseParser):
         if 'view' in parser_context:
             if hasattr(parser_context['view'], 'csv_header'):
                 header = parser_context['view'].csv_header
-                print("using header")
 
         try:
             strdata = stream.read()
             binary = universal_newlines(strdata)
             rows = unicode_csv_reader(binary, delimiter=delimiter, charset=encoding)
             data = OrderedRows(header or next(rows))
-            print(f"data header: {data.header}")
             for row in rows:
-                print(f"Adding csv row: {row}")
                 row_data = dict(zip(data.header, row))
                 data.append(row_data)
             return data
