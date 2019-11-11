@@ -125,9 +125,7 @@ class CSVRenderer(BaseRenderer):
             yield flat_item
 
     def flatten_item(self, item):
-        if isinstance(item, list):
-            flat_item = self.flatten_list(item)
-        elif isinstance(item, dict):
+        if isinstance(item, dict):
             flat_item = self.flatten_dict(item)
         else:
             flat_item = {'': item}
