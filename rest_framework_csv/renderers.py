@@ -58,7 +58,7 @@ class CSVRenderer(BaseRenderer):
 
         return csv_buffer.getvalue()
 
-    def tablize(self, data, header=None, labels=None):
+    def tablize(self, data=[], header=None, labels=None):
         """
         Convert a list of data into a table.
 
