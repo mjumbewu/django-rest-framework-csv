@@ -128,6 +128,12 @@ To run the tests against the current environment:
 Changelog
 =========
 
+2.1.1
+-----
+
+- Add support for byte order markers (BOM) (thanks @Yaoxin)
+- Documentation updates (thanks @rjemanuele and @coreyshirk)
+
 2.1.0
 -----
 
@@ -202,4 +208,3 @@ Changelog
 -----
 
 - Initial release
-
