@@ -9,7 +9,6 @@ from rest_framework_csv.misc import Echo
 from types import GeneratorType
 
 from logging import getLogger
-
 log = getLogger(__name__)
 
 # six versions 1.3.0 and previous don't have PY2
@@ -17,7 +16,6 @@ try:
     from six import PY2
 except ImportError:
     import sys
-
     PY2 = sys.version_info[0] == 2
 
 
@@ -176,24 +174,19 @@ class CSVRenderer(BaseRenderer):
     def headers():
         doc = ("The headers property. Kept around for backward compatibility."
                "Use the header attribute instead.")
-
         def fget(self):
             log.warning('The CSVRenderer.headers property is deprecated. '
                         'Use CSVRenderer.header instead.')
             return self.header
-
         def fset(self, value):
             log.warning('The CSVRenderer.headers property is deprecated. '
                         'Use CSVRenderer.header instead.')
             self.header = value
-
         def fdel(self):
             log.warning('The CSVRenderer.headers property is deprecated. '
                         'Use CSVRenderer.header instead.')
             del self.header
-
         return locals()
-
     headers = property(**headers())
 
 
