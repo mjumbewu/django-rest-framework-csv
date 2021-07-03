@@ -1,0 +1,80 @@
+name: Unit tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Python ${{ matrix.env.python }} | ${{ matrix.env.TOXENV }}
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix:
+        env:
+          - python: 2.7
+            TOXENV: py27-django18-drf2
+          - python: 2.7
+            TOXENV: py36-django18-drf36
+          - python: 2.7
+            TOXENV: py36-django111-drf2
+          - python: 2.7
+            TOXENV: py36-django111-drf36
+
+          - python: 3.5
+            TOXENV: py35-django18-drf2
+          - python: 3.5
+            TOXENV: py35-django18-drf36
+          - python: 3.5
+            TOXENV: py35-django111-drf2
+          - python: 3.5
+            TOXENV: py35-django111-drf36
+
+          - python: 3.6
+            TOXENV: py36-django111-drf3
+          - python: 3.6
+            TOXENV: py36-django21-drf3
+          - python: 3.6
+            TOXENV: py36-django22-drf3
+
+          - python: 3.7
+            TOXENV: py37-django21-drf3
+          - python: 3.7
+            TOXENV: py37-django22-drf3
+          - python: 3.7
+            TOXENV: py37-django30-drf3
+
+          - python: 3.8
+            TOXENV: py38-django21-drf3
+          - python: 3.8
+            TOXENV: py38-django22-drf3
+          - python: 3.8
+            TOXENV: py38-django30-drf3
+          - python: 3.8
+            TOXENV: py38-django31-drf3
+          - python: 3.8
+            TOXENV: py38-django32-drf3
+
+          - python: 3.9
+            TOXENV: py39-django22-drf3
+          - python: 3.9
+            TOXENV: py39-django30-drf3
+          - python: 3.9
+            TOXENV: py39-django31-drf3
+          - python: 3.9
+            TOXENV: py39-django32-drf3
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.env.python }}
+      - name: Install tox
+        run: pip install tox
+      - name: Run Tests
+        env:
+          TOXENV: django${{ matrix.env.TOXENV }}
+        run: tox -e ${{ matrix.env.TOXENV }}
