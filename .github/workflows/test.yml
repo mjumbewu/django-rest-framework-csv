@@ -21,7 +21,7 @@ jobs:
           - python: 2.7
             TOXENV: py27-django111-drf2
           - python: 2.7
-            TOXENV: py36-django111-drf36
+            TOXENV: py27-django111-drf36
 
           - python: 3.5
             TOXENV: py35-django18-drf2
