@@ -23,22 +23,6 @@ jobs:
           - python: 2.7
             TOXENV: py27-django111-drf36
 
-          - python: 3.5
-            TOXENV: py35-django18-drf2
-          - python: 3.5
-            TOXENV: py35-django18-drf36
-          - python: 3.5
-            TOXENV: py35-django111-drf2
-          - python: 3.5
-            TOXENV: py35-django111-drf36
-
-          - python: 3.6
-            TOXENV: py36-django111-drf3
-          - python: 3.6
-            TOXENV: py36-django21-drf3
-          - python: 3.6
-            TOXENV: py36-django22-drf3
-
           - python: 3.7
             TOXENV: py37-django21-drf3
           - python: 3.7
@@ -81,12 +65,6 @@ jobs:
           - python: '3.10'
             TOXENV: py310-django42-drf3
 
-          - python: 3.11
-            TOXENV: py311-django40-drf3
-          - python: 3.11
-            TOXENV: py311-django41-drf3
-          - python: 3.11
-            TOXENV: py311-django42-drf3
 
     steps:
       - uses: actions/checkout@v2
