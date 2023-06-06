@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Python ${{ matrix.env.python }} | ${{ matrix.env.TOXENV }}
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -80,6 +80,13 @@ jobs:
             TOXENV: py310-django41-drf3
           - python: 3.10
             TOXENV: py310-django42-drf3
+
+          - python: 3.11
+            TOXENV: py311-django40-drf3
+          - python: 3.11
+            TOXENV: py311-django41-drf3
+          - python: 3.11
+            TOXENV: py311-django42-drf3
 
     steps:
       - uses: actions/checkout@v2
