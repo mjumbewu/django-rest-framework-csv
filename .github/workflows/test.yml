@@ -72,13 +72,13 @@ jobs:
           - python: 3.9
             TOXENV: py39-django42-drf3
 
-          - python: 3.10
+          - python: '3.10'
             TOXENV: py310-django32-drf3
-          - python: 3.10
+          - python: '3.10'
             TOXENV: py310-django40-drf3
-          - python: 3.10
+          - python: '3.10'
             TOXENV: py310-django41-drf3
-          - python: 3.10
+          - python: '3.10'
             TOXENV: py310-django42-drf3
 
           - python: 3.11
