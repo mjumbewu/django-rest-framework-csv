@@ -65,6 +65,21 @@ jobs:
             TOXENV: py39-django31-drf3
           - python: 3.9
             TOXENV: py39-django32-drf3
+          - python: 3.9
+            TOXENV: py39-django40-drf3
+          - python: 3.9
+            TOXENV: py39-django41-drf3
+          - python: 3.9
+            TOXENV: py39-django42-drf3
+
+          - python: 3.10
+            TOXENV: py310-django32-drf3
+          - python: 3.10
+            TOXENV: py310-django40-drf3
+          - python: 3.10
+            TOXENV: py310-django41-drf3
+          - python: 3.10
+            TOXENV: py310-django42-drf3
 
     steps:
       - uses: actions/checkout@v2
