@@ -1,0 +1,26 @@
+---
+default_language_version:
+  python: python3.8
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-toml
+      - id: trailing-whitespace
+      - id: check-executables-have-shebangs
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: fix-byte-order-marker
+
+  - repo: https://github.com/psf/black
+    rev: 23.7.0
+    hooks:
+      - id: black
+
+  - rev: v0.0.286
+    repo: https://github.com/charliermarsh/ruff-pre-commit
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
