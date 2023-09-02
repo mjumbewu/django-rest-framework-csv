@@ -128,6 +128,16 @@ To run the tests against the current environment:
 Changelog
 =========
 
+3.0.0
+-----
+
+- Drop support for unsupported versions of Django and Python
+  - Django: 3.2, 4.1 and 4.2 are supported
+  - Python: 3.8, 3.9, 3.10 and 3.11 are supported
+- Removed deprecated `headers` attribute from `CSVRenderer`
+- Rendering is now exclusively `UTF-8` encoded
+- `CSVRenderer` now uses `io.StringIO` instead of `io.BytesIO`
+
 2.1.1
 -----
 

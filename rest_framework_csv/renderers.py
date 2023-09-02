@@ -1,22 +1,17 @@
-from __future__ import unicode_literals
 import codecs
-import unicodecsv as csv
+from io import StringIO
+from typing import Any, Generator, Iterable
+import csv
 from django.conf import settings
-from rest_framework.renderers import *
-from six import BytesIO, text_type
-from rest_framework_csv.orderedrows import OrderedRows
+from rest_framework.renderers import BaseRenderer
+
 from rest_framework_csv.misc import Echo
 from types import GeneratorType
 
 from logging import getLogger
 log = getLogger(__name__)
 
-# six versions 1.3.0 and previous don't have PY2
-try:
-    from six import PY2
-except ImportError:
-    import sys
-    PY2 = sys.version_info[0] == 2
+
 
 
 class CSVRenderer(BaseRenderer):
@@ -46,14 +41,14 @@ class CSVRenderer(BaseRenderer):
                         'writer_opts on the renderer class, instance, or pass '
                         'writer_opts into the renderer_context instead.')
 
-        writer_opts = renderer_context.get('writer_opts', writer_opts or self.writer_opts or {})
+        writer_opts: dict[str, Any] = renderer_context.get('writer_opts', writer_opts or self.writer_opts or {})
         header = renderer_context.get('header', self.header)
         labels = renderer_context.get('labels', self.labels)
-        encoding = renderer_context.get('encoding', settings.DEFAULT_CHARSET)
+
 
         table = self.tablize(data, header=header, labels=labels)
-        csv_buffer = BytesIO()
-        csv_writer = csv.writer(csv_buffer, encoding=encoding, **writer_opts)
+        csv_buffer = StringIO()
+        csv_writer = csv.writer(csv_buffer, **writer_opts)
         for row in table:
             csv_writer.writerow(row)
 
@@ -205,15 +200,14 @@ class CSVStreamingRenderer(CSVRenderer):
         writer_opts = renderer_context.get('writer_opts', self.writer_opts or {})
         header = renderer_context.get('header', self.header)
         labels = renderer_context.get('labels', self.labels)
-        encoding = renderer_context.get('encoding', settings.DEFAULT_CHARSET)
         bom = renderer_context.get('bom', False)
 
-        if bom and encoding == settings.DEFAULT_CHARSET:
-            yield codecs.BOM_UTF8
+        if bom:
+            yield str(codecs.BOM_UTF8)
 
         table = self.tablize(data, header=header, labels=labels)
         csv_buffer = Echo()
-        csv_writer = csv.writer(csv_buffer, encoding=encoding, **writer_opts)
+        csv_writer = csv.writer(csv_buffer, **writer_opts)
         for row in table:
             yield csv_writer.writerow(row)
 
@@ -222,9 +216,9 @@ class PaginatedCSVRenderer (CSVRenderer):
     """
     Paginated renderer (when pagination is turned on for DRF)
     """
-    results_field = 'results'
+    results_field: str = 'results'
 
     def render(self, data: list[Any] | dict[str, list[Any] | Any], *args: Any, **kwargs: Any):
         if not isinstance(data, list):
             data = data.get(self.results_field, [])
-        return super(PaginatedCSVRenderer, self).render(data, *args, **kwargs)
+        return super().render(data, *args, **kwargs)
