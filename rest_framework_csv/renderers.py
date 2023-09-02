@@ -24,14 +24,14 @@ class CSVRenderer(BaseRenderer):
     Renderer which serializes to CSV
     """
 
-    media_type = 'text/csv'
-    format = 'csv'
-    level_sep = '.'
-    header = None
-    labels = None  # {'<field>':'<label>'}
-    writer_opts = None
+    media_type: str = 'text/csv'
+    format: str= 'csv'
+    level_sep: str = '.'
+    header: list[str] | None = None
+    labels: dict[str, str] | None = None  # {'<field>':'<label>'}
+    writer_opts: dict[str, Any] | None = None
 
-    def render(self, data, media_type=None, renderer_context={}, writer_opts=None):
+    def render(self, data, media_type=None, renderer_context: dict[str, Any]={}, writer_opts: dict[str, Any]|None=None):
         """
         Renders serialized *data* into CSV. For a dictionary:
         """
@@ -59,7 +59,7 @@ class CSVRenderer(BaseRenderer):
 
         return csv_buffer.getvalue()
 
-    def tablize(self, data, header=None, labels=None):
+    def tablize(self, data: Any, header: Any | None = None, labels: Any | None = None) -> Generator[list[Any], None, None]:
         """
         Convert a list of data into a table.
 
@@ -115,7 +115,7 @@ class CSVRenderer(BaseRenderer):
             # Generator will yield nothing if there's no data and no header
             pass
 
-    def flatten_data(self, data):
+    def flatten_data(self, data: Iterable[Any]) -> Generator[dict[str, Any], None, None]:
         """
         Convert the given data collection to a list of dictionaries that are
         each exactly one level deep. The key for each value in the dictionaries
@@ -135,7 +135,7 @@ class CSVRenderer(BaseRenderer):
 
         return flat_item
 
-    def nest_flat_item(self, flat_item, prefix):
+    def nest_flat_item(self, flat_item: dict[str, Any], prefix: str) -> dict[str, Any]:
         """
         Given a "flat item" (a dictionary exactly one level deep), nest all of
         the column headers in a namespace designated by prefix.  For example:
@@ -153,19 +153,19 @@ class CSVRenderer(BaseRenderer):
             nested_item[nested_header] = val
         return nested_item
 
-    def flatten_list(self, l):
+    def flatten_list(self, l: list[Any]) -> dict[str, Any]:
         flat_list = {}
         for index, item in enumerate(l):
-            index = text_type(index)
+            index_str = str(index)
             flat_item = self.flatten_item(item)
-            nested_item = self.nest_flat_item(flat_item, index)
+            nested_item = self.nest_flat_item(flat_item, index_str)
             flat_list.update(nested_item)
         return flat_list
 
-    def flatten_dict(self, d):
+    def flatten_dict(self, d: dict[str, Any]) -> dict[str, Any]:
         flat_dict = {}
         for key, item in d.items():
-            key = text_type(key)
+            key = str(key)
             flat_item = self.flatten_item(item)
             nested_item = self.nest_flat_item(flat_item, key)
             flat_dict.update(nested_item)
@@ -191,11 +191,11 @@ class CSVRenderer(BaseRenderer):
 
 
 class CSVRendererWithUnderscores(CSVRenderer):
-    level_sep = '_'
+    level_sep: str = '_'
 
 
 class CSVStreamingRenderer(CSVRenderer):
-    def render(self, data, media_type=None, renderer_context={}):
+    def render(self, data, media_type=None, renderer_context:dict[str, Any]={}) -> Generator[str, None, None]:
         """
         Renders serialized *data* into CSV to be used with Django
         StreamingHttpResponse. We need to return a generator here, so Django
@@ -241,7 +241,7 @@ class PaginatedCSVRenderer (CSVRenderer):
     """
     results_field = 'results'
 
-    def render(self, data, *args, **kwargs):
+    def render(self, data: list[Any] | dict[str, list[Any] | Any], *args: Any, **kwargs: Any):
         if not isinstance(data, list):
             data = data.get(self.results_field, [])
         return super(PaginatedCSVRenderer, self).render(data, *args, **kwargs)
