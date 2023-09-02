@@ -171,23 +171,6 @@ class CSVRenderer(BaseRenderer):
             flat_dict.update(nested_item)
         return flat_dict
 
-    def headers():
-        doc = ("The headers property. Kept around for backward compatibility."
-               "Use the header attribute instead.")
-        def fget(self):
-            log.warning('The CSVRenderer.headers property is deprecated. '
-                        'Use CSVRenderer.header instead.')
-            return self.header
-        def fset(self, value):
-            log.warning('The CSVRenderer.headers property is deprecated. '
-                        'Use CSVRenderer.header instead.')
-            self.header = value
-        def fdel(self):
-            log.warning('The CSVRenderer.headers property is deprecated. '
-                        'Use CSVRenderer.header instead.')
-            del self.header
-        return locals()
-    headers = property(**headers())
 
 
 class CSVRendererWithUnderscores(CSVRenderer):
