@@ -10,9 +10,12 @@ from rest_framework.exceptions import ParseError
 from rest_framework_csv.orderedrows import OrderedRows
 
 
-def unicode_csv_reader(csv_data: Iterable[str], dialect:"csv._DialectLike"=csv.excel,  **kwargs) -> Generator[list[str], None, None]:
+def unicode_csv_reader(
+    csv_data: Iterable[str], dialect: "csv._DialectLike" = csv.excel, **kwargs
+) -> Generator[list[str], None, None]:
     csv_reader = csv.reader(csv_data, dialect=dialect, **kwargs)
     yield from csv_reader
+
 
 def universal_newlines(stream) -> Generator[str, None, None]:
     # It's possible that the stream was not opened in universal
@@ -23,6 +26,7 @@ def universal_newlines(stream) -> Generator[str, None, None]:
     # the row itself.
     yield from stream.splitlines()
 
+
 class CSVParser(BaseParser):
     """
     Parses CSV serialized data.
@@ -30,11 +34,16 @@ class CSVParser(BaseParser):
     The parser assumes the first line contains the column names.
     """
 
-    media_type: str = 'text/csv'
+    media_type: str = "text/csv"
 
-    def parse(self, stream: io.BytesIO | io.StringIO |io.TextIOWrapper, media_type=None, parser_context=None):
+    def parse(
+        self,
+        stream: io.BytesIO | io.StringIO | io.TextIOWrapper,
+        media_type=None,
+        parser_context=None,
+    ):
         parser_context = parser_context or {}
-        delimiter: str = parser_context.get('delimiter', ',')
+        delimiter: str = parser_context.get("delimiter", ",")
 
         try:
             strdata = stream.read()
@@ -46,5 +55,4 @@ class CSVParser(BaseParser):
                 data.append(row_data)
             return data
         except Exception as exc:
-            raise ParseError('CSV parse error - %s' % str(exc))
-
+            raise ParseError("CSV parse error - %s" % str(exc))

@@ -9,9 +9,8 @@ from rest_framework_csv.misc import Echo
 from types import GeneratorType
 
 from logging import getLogger
+
 log = getLogger(__name__)
-
-
 
 
 class CSVRenderer(BaseRenderer):
@@ -19,32 +18,39 @@ class CSVRenderer(BaseRenderer):
     Renderer which serializes to CSV
     """
 
-    media_type: str = 'text/csv'
-    format: str= 'csv'
-    level_sep: str = '.'
+    media_type: str = "text/csv"
+    format: str = "csv"
+    level_sep: str = "."
     header: list[str] | None = None
     labels: dict[str, str] | None = None  # {'<field>':'<label>'}
     writer_opts: dict[str, Any] | None = None
 
-    def render(self, data, media_type=None, renderer_context: dict[str, Any]={}, writer_opts: dict[str, Any]|None=None):
+    def render(
+        self,
+        data,
+        media_type=None,
+        renderer_context: dict[str, Any] = {},
+        writer_opts: dict[str, Any] | None = None,
+    ):
         """
         Renders serialized *data* into CSV. For a dictionary:
         """
         if data is None:
-            return ''
+            return ""
 
         if not isinstance(data, list):
             data = [data]
 
         if writer_opts is not None:
-            log.warning('The writer_opts argument is deprecated. Set the '
-                        'writer_opts on the renderer class, instance, or pass '
-                        'writer_opts into the renderer_context instead.')
+            log.warning(
+                "The writer_opts argument is deprecated. Set the "
+                "writer_opts on the renderer class, instance, or pass "
+                "writer_opts into the renderer_context instead."
+            )
 
-        writer_opts: dict[str, Any] = renderer_context.get('writer_opts', writer_opts or self.writer_opts or {})
-        header = renderer_context.get('header', self.header)
-        labels = renderer_context.get('labels', self.labels)
-
+        writer_opts: dict[str, Any] = renderer_context.get("writer_opts", writer_opts or self.writer_opts or {})
+        header = renderer_context.get("header", self.header)
+        labels = renderer_context.get("labels", self.labels)
 
         table = self.tablize(data, header=header, labels=labels)
         csv_buffer = StringIO()
@@ -54,7 +60,9 @@ class CSVRenderer(BaseRenderer):
 
         return csv_buffer.getvalue()
 
-    def tablize(self, data: Any, header: Any | None = None, labels: Any | None = None) -> Generator[list[Any], None, None]:
+    def tablize(
+        self, data: Any, header: Any | None = None, labels: Any | None = None
+    ) -> Generator[list[Any], None, None]:
         """
         Convert a list of data into a table.
 
@@ -67,7 +75,7 @@ class CSVRenderer(BaseRenderer):
         """
         # Try to pull the header off of the data, if it's not passed in as an
         # argument.
-        if not header and hasattr(data, 'header'):
+        if not header and hasattr(data, "header"):
             header = data.header
 
         if data:
@@ -126,7 +134,7 @@ class CSVRenderer(BaseRenderer):
         elif isinstance(item, dict):
             flat_item = self.flatten_dict(item)
         else:
-            flat_item = {'': item}
+            flat_item = {"": item}
 
         return flat_item
 
@@ -167,13 +175,12 @@ class CSVRenderer(BaseRenderer):
         return flat_dict
 
 
-
 class CSVRendererWithUnderscores(CSVRenderer):
-    level_sep: str = '_'
+    level_sep: str = "_"
 
 
 class CSVStreamingRenderer(CSVRenderer):
-    def render(self, data, media_type=None, renderer_context:dict[str, Any]={}) -> Generator[str, None, None]:
+    def render(self, data, media_type=None, renderer_context: dict[str, Any] = {}) -> Generator[str, None, None]:
         """
         Renders serialized *data* into CSV to be used with Django
         StreamingHttpResponse. We need to return a generator here, so Django
@@ -190,17 +197,17 @@ class CSVStreamingRenderer(CSVRenderer):
 
         """
         if data is None:
-            yield ''
+            yield ""
 
-        self.labels = renderer_context.get('labels', self.labels)
+        self.labels = renderer_context.get("labels", self.labels)
 
         if not isinstance(data, GeneratorType) and not isinstance(data, list):
             data = [data]
 
-        writer_opts = renderer_context.get('writer_opts', self.writer_opts or {})
-        header = renderer_context.get('header', self.header)
-        labels = renderer_context.get('labels', self.labels)
-        bom = renderer_context.get('bom', False)
+        writer_opts = renderer_context.get("writer_opts", self.writer_opts or {})
+        header = renderer_context.get("header", self.header)
+        labels = renderer_context.get("labels", self.labels)
+        bom = renderer_context.get("bom", False)
 
         if bom:
             yield str(codecs.BOM_UTF8)
@@ -212,11 +219,12 @@ class CSVStreamingRenderer(CSVRenderer):
             yield csv_writer.writerow(row)
 
 
-class PaginatedCSVRenderer (CSVRenderer):
+class PaginatedCSVRenderer(CSVRenderer):
     """
     Paginated renderer (when pagination is turned on for DRF)
     """
-    results_field: str = 'results'
+
+    results_field: str = "results"
 
     def render(self, data: list[Any] | dict[str, list[Any] | Any], *args: Any, **kwargs: Any):
         if not isinstance(data, list):
