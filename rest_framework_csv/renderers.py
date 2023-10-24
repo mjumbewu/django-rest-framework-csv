@@ -1,22 +1,15 @@
 from __future__ import unicode_literals
 import codecs
-import unicodecsv as csv
+import csv
 from django.conf import settings
 from rest_framework.renderers import *
-from six import BytesIO, text_type
+from io import StringIO
 from rest_framework_csv.orderedrows import OrderedRows
 from rest_framework_csv.misc import Echo
 from types import GeneratorType
 
 from logging import getLogger
 log = getLogger(__name__)
-
-# six versions 1.3.0 and previous don't have PY2
-try:
-    from six import PY2
-except ImportError:
-    import sys
-    PY2 = sys.version_info[0] == 2
 
 
 class CSVRenderer(BaseRenderer):
@@ -52,12 +45,12 @@ class CSVRenderer(BaseRenderer):
         encoding = renderer_context.get('encoding', settings.DEFAULT_CHARSET)
 
         table = self.tablize(data, header=header, labels=labels)
-        csv_buffer = BytesIO()
-        csv_writer = csv.writer(csv_buffer, encoding=encoding, **writer_opts)
+        csv_buffer = StringIO()
+        csv_writer = csv.writer(csv_buffer, **writer_opts)
         for row in table:
             csv_writer.writerow(row)
 
-        return csv_buffer.getvalue()
+        return csv_buffer.getvalue().encode(encoding)
 
     def tablize(self, data, header=None, labels=None):
         """
@@ -156,7 +149,7 @@ class CSVRenderer(BaseRenderer):
     def flatten_list(self, l):
         flat_list = {}
         for index, item in enumerate(l):
-            index = text_type(index)
+            index = str(index)
             flat_item = self.flatten_item(item)
             nested_item = self.nest_flat_item(flat_item, index)
             flat_list.update(nested_item)
@@ -165,7 +158,7 @@ class CSVRenderer(BaseRenderer):
     def flatten_dict(self, d):
         flat_dict = {}
         for key, item in d.items():
-            key = text_type(key)
+            key = str(key)
             flat_item = self.flatten_item(item)
             nested_item = self.nest_flat_item(flat_item, key)
             flat_dict.update(nested_item)
@@ -230,9 +223,9 @@ class CSVStreamingRenderer(CSVRenderer):
 
         table = self.tablize(data, header=header, labels=labels)
         csv_buffer = Echo()
-        csv_writer = csv.writer(csv_buffer, encoding=encoding, **writer_opts)
+        csv_writer = csv.writer(csv_buffer, **writer_opts)
         for row in table:
-            yield csv_writer.writerow(row)
+            yield csv_writer.writerow(row).encode(encoding)
 
 
 class PaginatedCSVRenderer (CSVRenderer):
