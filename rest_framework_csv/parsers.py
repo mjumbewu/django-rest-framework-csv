@@ -1,19 +1,12 @@
-import unicodecsv as csv
-#import csv
+import csv
 import codecs
 import io
-import six
 
 from django.conf import settings
 from rest_framework.parsers import BaseParser
 from rest_framework.exceptions import ParseError
 from rest_framework_csv.orderedrows import OrderedRows
 
-
-def unicode_csv_reader(csv_data, dialect=csv.excel, charset='utf-8', **kwargs):
-    csv_reader = csv.reader(csv_data, dialect=dialect, encoding=charset, **kwargs)
-    for row in csv_reader:
-        yield row
 
 def universal_newlines(stream):
     # It's possible that the stream was not opened in universal
@@ -40,9 +33,9 @@ class CSVParser(BaseParser):
         encoding = parser_context.get('encoding', settings.DEFAULT_CHARSET)
 
         try:
-            strdata = stream.read()
-            binary = universal_newlines(strdata)
-            rows = unicode_csv_reader(binary, delimiter=delimiter, charset=encoding)
+            strdata = stream.read().decode(encoding)
+            lines = universal_newlines(strdata)
+            rows = csv.reader(lines, dialect=csv.excel, delimiter=delimiter)
             data = OrderedRows(next(rows))
             for row in rows:
                 row_data = dict(zip(data.header, row))
