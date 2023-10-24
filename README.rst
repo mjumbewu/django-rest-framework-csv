@@ -18,7 +18,7 @@ Installation
 Compatibility
 -------------
 
-- For compatibility with Python 3 and Django < 3.2, use `djangorestframework-csv<4`
+- For compatibility with Python 3 and Django < 3.2, use `djangorestframework-csv<3.0.1`
 - For compatibility with Python 2.7, use `djangorestframework-csv<3`
 
 Usage
@@ -130,6 +130,13 @@ To run the tests against the current environment:
 
 Changelog
 =========
+
+3.0.1
+-----
+
+- Remove Django tests for all but the currently supported Django versions
+  (3.2, 4.1, 4.2). Also only keep tests for Python versions compatible with
+  supported Django versions (3.8 - 3.11).
 
 3.0.0
 -----
