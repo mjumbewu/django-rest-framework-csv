@@ -128,6 +128,13 @@ To run the tests against the current environment:
 Changelog
 =========
 
+3.0.0
+-----
+
+- Removed compatibility with Python 2
+- Added compatibility with Django up to 3.2 and 4.2
+  (thanks to work from @TTycho, @awais786, @arpitjain799, @tirkarthi)
+
 2.1.1
 -----
 
