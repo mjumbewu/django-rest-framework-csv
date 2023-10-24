@@ -140,7 +140,7 @@ class TestCSVRenderer (TestCase):
         }
         renderer.writer_opts = writer_opts
         dump = renderer.render(data)
-        self.assertEquals(dump.count(b';'), 3)
+        self.assertEqual(dump.count(b';'), 3)
         self.assertIn(b"|test|", dump)
         self.assertIn(b"|hello|", dump)
 
@@ -154,7 +154,7 @@ class TestCSVRenderer (TestCase):
             'delimiter': ';',
         }
         dump = renderer.render(data, renderer_context={'writer_opts': writer_opts})
-        self.assertEquals(dump.count(b';'), 3)
+        self.assertEqual(dump.count(b';'), 3)
         self.assertIn(b"|test|", dump)
         self.assertIn(b"|hello|", dump)
 
@@ -192,7 +192,7 @@ class TestCSVStreamingRenderer(TestCase):
         renderer_list_dump = renderer.render(self.data)
         self.assertIsInstance(renderer_generator_dump, GeneratorType)
         self.assertIsInstance(renderer_list_dump, GeneratorType)
-        self.assertEquals(list(renderer_generator_dump), list(renderer_list_dump))
+        self.assertEqual(list(renderer_generator_dump), list(renderer_list_dump))
 
 
 class TestPaginatedCSVRenderer(TestCase):
