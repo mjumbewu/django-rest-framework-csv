@@ -66,7 +66,7 @@ are two ways to do this:
         @api_view(['GET'])
         @renderer_classes((MyUserRenderer,))
         def my_view(request):
-            users = User.objects.filter(active=True)
+            users = User.objects.filter(is_active=True)
             content = [{'first': user.first_name,
                         'last': user.last_name,
                         'email': user.email}
