@@ -4,12 +4,9 @@ djangorestframework-csv
 
 |build status|_
 
-.. |build status| image:: https://secure.travis-ci.org/mjumbewu/django-rest-framework-csv.png?branch=master
-.. _build status: https://travis-ci.org/mjumbewu/django-rest-framework-csv
+.. |build status| image:: https://github.com/mjumbewu/django-rest-framework-csv/actions/workflows/test.yml/badge.svg
 
 **CSV Tools for Django REST Framework**
-
-**Author:** Mjumbe Wawatu Poe, `Follow me on Twitter <http://www.twitter.com/mjumbewu>`_.
 
 Installation
 ------------
@@ -17,6 +14,12 @@ Installation
 .. code-block:: bash
 
     $ pip install djangorestframework-csv
+
+Compatibility
+-------------
+
+- For compatibility with Python 3 and Django < 3.2, use `djangorestframework-csv<4`
+- For compatibility with Python 2.7, use `djangorestframework-csv<3`
 
 Usage
 -----

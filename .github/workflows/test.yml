@@ -14,34 +14,11 @@ jobs:
       fail-fast: false
       matrix:
         env:
-          - python: 3.7
-            TOXENV: py37-django21-drf3
-          - python: 3.7
-            TOXENV: py37-django22-drf3
-          - python: 3.7
-            TOXENV: py37-django30-drf3
-
-          - python: 3.8
-            TOXENV: py38-django21-drf3
-          - python: 3.8
-            TOXENV: py38-django22-drf3
-          - python: 3.8
-            TOXENV: py38-django30-drf3
-          - python: 3.8
-            TOXENV: py38-django31-drf3
           - python: 3.8
             TOXENV: py38-django32-drf3
 
           - python: 3.9
-            TOXENV: py39-django22-drf3
-          - python: 3.9
-            TOXENV: py39-django30-drf3
-          - python: 3.9
-            TOXENV: py39-django31-drf3
-          - python: 3.9
             TOXENV: py39-django32-drf3
-          - python: 3.9
-            TOXENV: py39-django40-drf3
           - python: 3.9
             TOXENV: py39-django41-drf3
           - python: 3.9
@@ -50,11 +27,14 @@ jobs:
           - python: '3.10'
             TOXENV: py310-django32-drf3
           - python: '3.10'
-            TOXENV: py310-django40-drf3
-          - python: '3.10'
             TOXENV: py310-django41-drf3
           - python: '3.10'
             TOXENV: py310-django42-drf3
+
+          - python: '3.11'
+            TOXENV: py311-django41-drf3
+          - python: '3.11'
+            TOXENV: py311-django42-drf3
 
 
     steps:
