@@ -2,7 +2,8 @@
 from __future__ import unicode_literals
 
 import csv
-from six import BytesIO, PY3
+import sys
+from io import BytesIO
 from types import GeneratorType
 
 from django.test import TestCase
@@ -134,8 +135,8 @@ class TestCSVRenderer (TestCase):
         data = [{'a': 'test', 'b': 'hello'}, {'a': 'foo', 'b': 'bar'}]
         writer_opts = {
             'quoting': csv.QUOTE_ALL,
-            'quotechar': '|' if PY3 else b'|',
-            'delimiter': ';' if PY3 else b';',
+            'quotechar': '|',
+            'delimiter': ';',
         }
         renderer.writer_opts = writer_opts
         dump = renderer.render(data)
@@ -149,8 +150,8 @@ class TestCSVRenderer (TestCase):
         data = [{'a': 'test', 'b': 'hello'}, {'a': 'foo', 'b': 'bar'}]
         writer_opts = {
             'quoting': csv.QUOTE_ALL,
-            'quotechar': '|' if PY3 else b'|',
-            'delimiter': ';' if PY3 else b';',
+            'quotechar': '|',
+            'delimiter': ';',
         }
         dump = renderer.render(data, renderer_context={'writer_opts': writer_opts})
         self.assertEqual(dump.count(b';'), 3)
@@ -246,7 +247,7 @@ class TestCSVParser(TestCase):
 
         parser = CSVParser()
 
-        with open(CSVFILE, 'rbU') as csv_file:
+        with open(CSVFILE, 'rbU' if sys.version_info <= (3, 10) else 'rb') as csv_file:
             data = parser.parse(csv_file)
             self.assertEqual(data, [{'Name': 'Kathryn Miller', 'ID': '67', 'Country': 'United States'},
                                     {'Name': 'Jen Mark',       'ID': '78', 'Country': 'Canada'}])

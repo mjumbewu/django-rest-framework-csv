@@ -5,6 +5,7 @@ build/
 *.egg-info/
 *~
 
+/env*/
 /.settings/
 /.pydevproject
 /.project
