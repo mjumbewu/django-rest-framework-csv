@@ -5,6 +5,7 @@ djangorestframework-csv
 |build status|_
 
 .. |build status| image:: https://github.com/mjumbewu/django-rest-framework-csv/actions/workflows/test.yml/badge.svg
+.. _build status: https://github.com/mjumbewu/django-rest-framework-csv/actions/workflows/test.yml
 
 **CSV Tools for Django REST Framework**
 
