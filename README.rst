@@ -132,6 +132,11 @@ To run the tests against the current environment:
 Changelog
 =========
 
+3.0.2
+-----
+
+- Fix the project long description metadata
+
 3.0.1
 -----
 

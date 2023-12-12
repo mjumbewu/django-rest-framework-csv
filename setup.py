@@ -10,6 +10,7 @@ import sys
 name = 'djangorestframework-csv'
 package = 'rest_framework_csv'
 description = 'CSV Tools for Django REST Framework'
+readme = os.path.join(os.path.dirname(__file__), 'README.rst')
 url = 'https://github.com/mjumbewu/django-rest-framework-csv'
 author = 'Mjumbe Wawatu Ukweli'
 author_email = 'mjumbewu@gmail.com'
@@ -65,6 +66,8 @@ setup(
     url=url,
     license=license,
     description=description,
+    long_description=open(readme).read(),
+    long_description_content_type='text/x-rst',
     author=author,
     author_email=author_email,
     packages=get_packages(package),
