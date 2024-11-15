@@ -15,27 +15,35 @@ jobs:
       matrix:
         env:
           - python: 3.8
-            TOXENV: py38-django32-drf3
+            TOXENV: py38-django32
 
           - python: 3.9
-            TOXENV: py39-django32-drf3
+            TOXENV: py39-django32
           - python: 3.9
-            TOXENV: py39-django41-drf3
+            TOXENV: py39-django41
           - python: 3.9
-            TOXENV: py39-django42-drf3
+            TOXENV: py39-django42
 
           - python: '3.10'
-            TOXENV: py310-django32-drf3
+            TOXENV: py310-django32
           - python: '3.10'
-            TOXENV: py310-django41-drf3
+            TOXENV: py310-django41
           - python: '3.10'
-            TOXENV: py310-django42-drf3
+            TOXENV: py310-django42
+          - python: '3.10'
+            TOXENV: py310-django50
 
           - python: '3.11'
-            TOXENV: py311-django41-drf3
+            TOXENV: py311-django41
           - python: '3.11'
-            TOXENV: py311-django42-drf3
+            TOXENV: py311-django42
+          - python: '3.11'
+            TOXENV: py311-django50
 
+          - python: '3.12'
+            TOXENV: py311-django42
+          - python: '3.12'
+            TOXENV: py311-django50
 
     steps:
       - uses: actions/checkout@v4
