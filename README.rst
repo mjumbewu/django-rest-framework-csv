@@ -126,7 +126,7 @@ To run the tests against the current environment:
 
 .. code-block:: bash
 
-    $ ./manage.py test
+    $ DJANGO_SETTINGS_MODULE=testsettings python -m django test
 
 
 Changelog
