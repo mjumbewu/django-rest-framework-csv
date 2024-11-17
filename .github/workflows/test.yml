@@ -39,14 +39,14 @@ jobs:
             TOXENV: py311-django51
 
           - python: '3.12'
-            TOXENV: py311-django42
+            TOXENV: py312-django42
           - python: '3.12'
-            TOXENV: py311-django50
+            TOXENV: py312-django50
           - python: '3.12'
-            TOXENV: py311-django51
+            TOXENV: py312-django51
 
           - python: '3.13'
-            TOXENV: py311-django51
+            TOXENV: py313-django51
 
     steps:
       - uses: actions/checkout@v4
