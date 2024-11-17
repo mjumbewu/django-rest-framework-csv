@@ -20,30 +20,33 @@ jobs:
           - python: 3.9
             TOXENV: py39-django32
           - python: 3.9
-            TOXENV: py39-django41
-          - python: 3.9
             TOXENV: py39-django42
 
           - python: '3.10'
             TOXENV: py310-django32
           - python: '3.10'
-            TOXENV: py310-django41
-          - python: '3.10'
             TOXENV: py310-django42
           - python: '3.10'
             TOXENV: py310-django50
+          - python: '3.10'
+            TOXENV: py310-django51
 
-          - python: '3.11'
-            TOXENV: py311-django41
           - python: '3.11'
             TOXENV: py311-django42
           - python: '3.11'
             TOXENV: py311-django50
+          - python: '3.11'
+            TOXENV: py311-django51
 
           - python: '3.12'
             TOXENV: py311-django42
           - python: '3.12'
             TOXENV: py311-django50
+          - python: '3.12'
+            TOXENV: py311-django51
+
+          - python: '3.13'
+            TOXENV: py311-django51
 
     steps:
       - uses: actions/checkout@v4
