@@ -8,9 +8,10 @@ on:
 
 jobs:
   build:
-    name: Python ${{ matrix.env.python }} | ${{ matrix.env.TOXENV }}
+    name: Python ${{ matrix.python-version }}
     runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
         python-version:
         - 3.9
