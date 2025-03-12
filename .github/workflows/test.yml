@@ -11,52 +11,24 @@ jobs:
     name: Python ${{ matrix.env.python }} | ${{ matrix.env.TOXENV }}
     runs-on: ubuntu-22.04
     strategy:
-      fail-fast: false
       matrix:
-        env:
-          - python: 3.8
-            TOXENV: py38-django32
-
-          - python: 3.9
-            TOXENV: py39-django32
-          - python: 3.9
-            TOXENV: py39-django42
-
-          - python: '3.10'
-            TOXENV: py310-django32
-          - python: '3.10'
-            TOXENV: py310-django42
-          - python: '3.10'
-            TOXENV: py310-django50
-          - python: '3.10'
-            TOXENV: py310-django51
-
-          - python: '3.11'
-            TOXENV: py311-django42
-          - python: '3.11'
-            TOXENV: py311-django50
-          - python: '3.11'
-            TOXENV: py311-django51
-
-          - python: '3.12'
-            TOXENV: py312-django42
-          - python: '3.12'
-            TOXENV: py312-django50
-          - python: '3.12'
-            TOXENV: py312-django51
-
-          - python: '3.13'
-            TOXENV: py313-django51
+        python-version:
+        - 3.9
+        - '3.10'
+        - '3.11'
+        - '3.12'
+        - '3.13'
 
     steps:
       - uses: actions/checkout@v4
+
       - name: setup python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.env.python }}
+          python-version: ${{ matrix.python-version }}
+
       - name: Install tox
         run: pip install tox
-      - name: Run Tests
-        env:
-          TOXENV: django${{ matrix.env.TOXENV }}
-        run: tox -e ${{ matrix.env.TOXENV }}
+
+      - name: Run tox targets for ${{ matrix.python-version }}
+        run: tox run -f py$(echo ${{ matrix.python-version }} | tr -d .)
