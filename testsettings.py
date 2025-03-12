@@ -13,8 +13,3 @@ INSTALLED_APPS = (
 )
 
 SECRET_KEY = 'testsecretkey'
-
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware'
-)

@@ -132,6 +132,14 @@ To run the tests against the current environment:
 Changelog
 =========
 
+Pending
+-------
+
+- Add compatibility with Python 3.12 and 3.13.
+- Remove compatibility with Python 3.8.
+- Add compatibility with Django 5.1 and 5.2.
+- Remove compatibility with Django 3.2, 4.0, and 4.1.
+
 3.0.2
 -----
 
