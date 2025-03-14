@@ -23,6 +23,7 @@ class CSVRenderer(BaseRenderer):
     header = None
     labels = None  # {'<field>':'<label>'}
     writer_opts = None
+    to_flat_list = True
 
     def render(self, data, media_type=None, renderer_context={}, writer_opts=None):
         """
@@ -119,7 +120,7 @@ class CSVRenderer(BaseRenderer):
             yield flat_item
 
     def flatten_item(self, item):
-        if isinstance(item, list):
+        if isinstance(item, list) and self.to_flat_list:
             flat_item = self.flatten_list(item)
         elif isinstance(item, dict):
             flat_item = self.flatten_dict(item)
@@ -185,7 +186,9 @@ class CSVRenderer(BaseRenderer):
 
 class CSVRendererWithUnderscores(CSVRenderer):
     level_sep = '_'
-
+    
+class CSVRendererWithList (CSVRenderer):
+    to_flat_list = False
 
 class CSVStreamingRenderer(CSVRenderer):
     def render(self, data, media_type=None, renderer_context={}):
