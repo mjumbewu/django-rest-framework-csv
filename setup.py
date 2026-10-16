@@ -42,7 +42,8 @@ def get_package_data(package):
     """
     walk = [(dirpath.replace(package + os.sep, '', 1), filenames)
             for dirpath, dirnames, filenames in os.walk(package)
-            if not os.path.exists(os.path.join(dirpath, '__init__.py'))]
+            if not os.path.exists(os.path.join(dirpath, '__init__.py'))
+            and '__pycache__' not in dirpath.split(os.sep)]
 
     filepaths = []
     for base, filenames in walk:
